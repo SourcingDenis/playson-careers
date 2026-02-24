@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, ChangeEvent, FormEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, MapPin, Clock, Building, Globe, Share2, ExternalLink } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, Building, Globe, Share2, ExternalLink, Upload, CheckCircle2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { Job } from './Home';
 
@@ -9,6 +9,13 @@ export default function JobDetails() {
   const { id } = useParams<{ id: string }>();
   const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
+  
+  // Form state
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [fileName, setFileName] = useState('');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -24,6 +31,53 @@ export default function JobDetails() {
         setLoading(false);
       });
   }, [id]);
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFileName(e.target.files[0].name);
+    }
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError('');
+    
+    const formData = new FormData(e.currentTarget);
+    formData.append('jobId', id || '');
+    
+    // Extract UTM parameters from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const utmData: Record<string, string> = {};
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(param => {
+      if (urlParams.has(param)) {
+        utmData[param] = urlParams.get(param) as string;
+      }
+    });
+    
+    if (Object.keys(utmData).length > 0) {
+      formData.append('utmData', JSON.stringify(utmData));
+    }
+    
+    try {
+      const response = await fetch('/api/apply', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        setSubmitSuccess(true);
+      } else {
+        setSubmitError(result.error || 'Failed to submit application. Please try again.');
+      }
+    } catch (error) {
+      setSubmitError('An unexpected error occurred. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -84,12 +138,10 @@ export default function JobDetails() {
 
             <div className="flex flex-wrap gap-4">
               <a 
-                href={job.applyUrl} 
-                target="_blank" 
-                rel="noreferrer"
+                href="#apply-form"
                 className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full font-medium transition-all flex items-center gap-2"
               >
-                Apply Now <ExternalLink className="w-4 h-4" />
+                Apply Now
               </a>
               <button 
                 onClick={() => {
@@ -117,15 +169,112 @@ export default function JobDetails() {
               dangerouslySetInnerHTML={{ __html: job.descriptionHtml }}
             />
             
-            <div className="mt-16 pt-8 border-t border-zinc-800">
-              <a 
-                href={job.applyUrl} 
-                target="_blank" 
-                rel="noreferrer"
-                className="inline-flex bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-full font-medium transition-all items-center gap-2"
-              >
-                Apply for this position <ExternalLink className="w-5 h-5" />
-              </a>
+            <div id="apply-form" className="mt-16 pt-12 border-t border-zinc-800 scroll-mt-24">
+              <h2 className="text-2xl font-bold mb-8">Apply for this position</h2>
+              
+              {submitSuccess ? (
+                <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-8 text-center">
+                  <div className="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle2 className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-xl font-bold text-emerald-400 mb-2">Application Submitted!</h3>
+                  <p className="text-zinc-400">Thank you for applying. Our team will review your application and get back to you soon.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {submitError && (
+                    <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-xl text-sm">
+                      {submitError}
+                    </div>
+                  )}
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label htmlFor="firstName" className="block text-sm font-medium text-zinc-300">First Name *</label>
+                      <input 
+                        type="text" 
+                        id="firstName" 
+                        name="firstName" 
+                        required 
+                        className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="lastName" className="block text-sm font-medium text-zinc-300">Last Name *</label>
+                      <input 
+                        type="text" 
+                        id="lastName" 
+                        name="lastName" 
+                        required 
+                        className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="block text-sm font-medium text-zinc-300">Email Address *</label>
+                    <input 
+                      type="email" 
+                      id="email" 
+                      name="email" 
+                      required 
+                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label htmlFor="phone" className="block text-sm font-medium text-zinc-300">Phone Number</label>
+                    <input 
+                      type="tel" 
+                      id="phone" 
+                      name="phone" 
+                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-zinc-300">Resume/CV *</label>
+                    <div 
+                      className="border-2 border-dashed border-zinc-800 hover:border-orange-500/50 rounded-xl p-8 text-center cursor-pointer transition-all bg-zinc-900/50"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <Upload className="w-8 h-8 text-zinc-500 mx-auto mb-3" />
+                      <p className="text-zinc-300 font-medium mb-1">
+                        {fileName ? fileName : 'Click to upload your resume'}
+                      </p>
+                      <p className="text-xs text-zinc-500">PDF, DOC, DOCX up to 10MB</p>
+                      <input 
+                        type="file" 
+                        name="resume" 
+                        ref={fileInputRef} 
+                        onChange={handleFileChange}
+                        className="hidden" 
+                        accept=".pdf,.doc,.docx"
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  <button 
+                    type="submit" 
+                    disabled={isSubmitting}
+                    className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-orange-500/50 disabled:cursor-not-allowed text-white py-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Submitting...
+                      </>
+                    ) : (
+                      'Submit Application'
+                    )}
+                  </button>
+                  
+                  <div className="text-center text-sm text-zinc-500 mt-4">
+                    Or <a href={job.applyUrl} target="_blank" rel="noreferrer" className="text-orange-500 hover:underline">apply on Ashby</a> directly.
+                  </div>
+                </form>
+              )}
             </div>
           </div>
           
