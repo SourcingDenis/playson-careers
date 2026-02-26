@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { MapPin, Clock, Building, Globe, ArrowRight, Zap, Server, Globe2, Activity, Users, Cpu, MessageCircle, Gift, GraduationCap, Heart, PartyPopper, Calendar, Search, Sparkles, ExternalLink, ShieldCheck, Handshake, ChevronDown, ChevronUp } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
+import { MapPin, Clock, Building, Globe, ArrowRight, Zap, Server, Globe2, Activity, Users, Cpu, MessageCircle, Gift, GraduationCap, Heart, PartyPopper, Calendar, Search, Sparkles, ExternalLink, ShieldCheck, Handshake, ChevronDown, ChevronUp, Flame } from 'lucide-react';
+import { differenceInMonths } from 'date-fns';
 
 export interface Job {
   id: string;
@@ -355,12 +355,21 @@ export default function Home() {
                                     >
                                         <Link 
                                         to={`/job/${job.id}`}
-                                        className="group block bg-zinc-900/50 border border-zinc-800 hover:border-blue-500/50 rounded-2xl p-6 transition-all hover:bg-zinc-900 hover:shadow-lg hover:shadow-blue-500/5"
+                                        className={`group block bg-zinc-900/50 border rounded-2xl p-6 transition-all hover:bg-zinc-900 hover:shadow-lg ${
+                                          differenceInMonths(new Date(), new Date(job.publishedAt)) > 6 
+                                            ? 'border-blue-500/50 animate-pulse hover:animate-none hover:border-blue-500 hover:shadow-blue-500/20' 
+                                            : 'border-zinc-800 hover:border-blue-500/50 hover:shadow-blue-500/5'
+                                        }`}
                                         >
                                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                                             <div>
-                                            <h3 className="text-xl font-semibold text-zinc-100 group-hover:text-blue-400 transition-colors mb-3">
+                                            <h3 className="text-xl font-semibold text-zinc-100 group-hover:text-blue-400 transition-colors mb-3 flex items-center gap-2">
                                                 {job.title}
+                                                {differenceInMonths(new Date(), new Date(job.publishedAt)) > 6 && (
+                                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-500 text-xs font-bold border border-blue-500/30 animate-pulse">
+                                                    <Flame className="w-3 h-3 fill-blue-500" /> Hot
+                                                  </span>
+                                                )}
                                             </h3>
                                             <div className="flex flex-wrap gap-4 text-sm text-zinc-400">
                                                 <div className="flex items-center gap-1.5">

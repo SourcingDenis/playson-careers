@@ -94,7 +94,7 @@ export default function JobDetails() {
                 rel="noreferrer"
                 className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full font-medium transition-all flex items-center gap-2"
               >
-                Apply on Ashby <ExternalLink className="w-4 h-4" />
+                Apply for this position <ExternalLink className="w-4 h-4" />
               </a>
               <button 
                 onClick={async () => {
