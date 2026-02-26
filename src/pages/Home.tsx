@@ -83,12 +83,17 @@ export default function Home() {
     <div className="pb-0 bg-zinc-950 text-zinc-50">
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden min-h-[90vh] flex items-center">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-orange-500/10 via-zinc-950 to-zinc-950 -z-10" />
+        {/* Dynamic Background */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-orange-500/20 via-zinc-950 to-zinc-950 -z-10" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-[100px] animate-pulse" />
+            <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] animate-pulse delay-1000" />
+        </div>
         
         {/* Animated Grid Background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] -z-10" />
 
-        <div className="mx-auto max-w-7xl px-6 w-full">
+        <div className="mx-auto max-w-7xl px-6 w-full relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
@@ -96,17 +101,27 @@ export default function Home() {
               transition={{ duration: 0.5 }}
               className="max-w-2xl"
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-sm font-medium mb-6 border border-orange-500/20">
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-sm font-medium mb-6 border border-orange-500/20 shadow-[0_0_15px_rgba(249,115,22,0.3)] backdrop-blur-sm"
+              >
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
                 </span>
                 We are hiring
-              </div>
+              </motion.div>
               
               <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6 leading-[1.1]">
                 Playson — <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600 inline-block pb-2">a leading supplier</span> <br/>
+                <span className="relative inline-block">
+                    <span className="absolute -inset-1 bg-gradient-to-r from-orange-500 to-red-500 blur-2xl opacity-20"></span>
+                    <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 pb-2 animate-gradient-x bg-[length:200%_auto]">
+                        a leading supplier
+                    </span>
+                </span> <br/>
                 of slot games.
               </h1>
               
@@ -115,10 +130,11 @@ export default function Home() {
               </p>
               
               <div className="flex flex-wrap gap-4">
-                <a href="#openings" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-lg shadow-orange-500/25 flex items-center gap-2">
-                  View Open Roles <ArrowRight className="w-5 h-5" />
+                <a href="#openings" className="relative group overflow-hidden bg-orange-500 text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(249,115,22,0.4)] flex items-center gap-2">
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer" />
+                  <span className="relative flex items-center gap-2">View Open Roles <ArrowRight className="w-5 h-5" /></span>
                 </a>
-                <Link to="/engineering" className="bg-zinc-900 hover:bg-zinc-800 text-zinc-200 px-8 py-4 rounded-full font-medium transition-all border border-zinc-800 hover:border-zinc-700 flex items-center gap-2">
+                <Link to="/engineering" className="bg-zinc-900 hover:bg-zinc-800 text-zinc-200 px-8 py-4 rounded-full font-medium transition-all border border-zinc-800 hover:border-zinc-700 flex items-center gap-2 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]">
                   Engineering Careers <Cpu className="w-4 h-4" />
                 </Link>
               </div>
@@ -129,32 +145,35 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="relative hidden lg:block"
+              className="relative hidden lg:block perspective-1000"
             >
-              <div className="relative z-10 bg-zinc-900/80 backdrop-blur-xl border border-zinc-800 rounded-3xl p-8 shadow-2xl shadow-orange-500/10 transform rotate-2 hover:rotate-0 transition-transform duration-500">
+              <div className="relative z-10 bg-zinc-900/60 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl shadow-orange-500/10 transform rotate-2 hover:rotate-0 transition-transform duration-500 group">
+                 {/* Shine effect on card */}
+                 <div className="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none" />
+                 
                  <div className="grid grid-cols-2 gap-6">
-                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50">
-                        <div className="text-4xl font-bold text-white mb-2">10k+</div>
+                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50 hover:border-orange-500/30 transition-colors group/item">
+                        <div className="text-4xl font-bold text-white mb-2 group-hover/item:text-orange-400 transition-colors">10k+</div>
                         <div className="text-sm text-zinc-400">Websites</div>
                     </div>
-                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50">
-                        <div className="text-4xl font-bold text-white mb-2">45m</div>
+                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50 hover:border-orange-500/30 transition-colors group/item">
+                        <div className="text-4xl font-bold text-white mb-2 group-hover/item:text-orange-400 transition-colors">45m</div>
                         <div className="text-sm text-zinc-400">Players</div>
                     </div>
-                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50">
-                        <div className="text-4xl font-bold text-white mb-2">250+</div>
+                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50 hover:border-orange-500/30 transition-colors group/item">
+                        <div className="text-4xl font-bold text-white mb-2 group-hover/item:text-orange-400 transition-colors">250+</div>
                         <div className="text-sm text-zinc-400">Partners</div>
                     </div>
-                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50">
-                        <div className="text-4xl font-bold text-white mb-2">27</div>
+                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50 hover:border-orange-500/30 transition-colors group/item">
+                        <div className="text-4xl font-bold text-white mb-2 group-hover/item:text-orange-400 transition-colors">27</div>
                         <div className="text-sm text-zinc-400">Jurisdictions</div>
                     </div>
                  </div>
               </div>
 
-              {/* Decorative Elements */}
-              <div className="absolute -top-10 -right-10 w-32 h-32 bg-orange-500/20 rounded-full blur-3xl -z-10" />
-              <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl -z-10" />
+              {/* Decorative Elements - Enhanced */}
+              <div className="absolute -top-20 -right-20 w-64 h-64 bg-orange-500/20 rounded-full blur-[80px] -z-10 animate-pulse" />
+              <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-blue-500/20 rounded-full blur-[80px] -z-10 animate-pulse delay-700" />
             </motion.div>
           </div>
         </div>
