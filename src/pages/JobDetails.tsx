@@ -33,7 +33,7 @@ export default function JobDetails() {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-playson-red border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -43,7 +43,7 @@ export default function JobDetails() {
       <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-6">
         <h2 className="text-2xl font-bold mb-4">Job not found</h2>
         <p className="text-zinc-400 mb-8">The position you're looking for might have been filled or removed.</p>
-        <Link to="/" className="text-orange-500 hover:text-orange-400 flex items-center gap-2">
+        <Link to="/" className="text-playson-red hover:text-red-600 flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" /> Back to all jobs
         </Link>
       </div>
@@ -55,7 +55,7 @@ export default function JobDetails() {
   return (
     <div className="pb-24">
       {/* Header */}
-      <div className={`bg-zinc-900/50 border-b pt-12 pb-16 transition-colors duration-500 ${isHot ? 'border-orange-500/30' : 'border-zinc-800'}`}>
+      <div className={`bg-zinc-900/50 border-b pt-12 pb-16 transition-colors duration-500 ${isHot ? 'border-playson-red/30' : 'border-zinc-800'}`}>
         <div className="mx-auto max-w-4xl px-6">
           <Link to="/" className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-200 transition-colors mb-8">
             <ArrowLeft className="w-4 h-4" /> Back to careers
@@ -69,8 +69,8 @@ export default function JobDetails() {
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 flex flex-wrap items-center gap-4">
               {job.title}
               {isHot && (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/20 text-orange-500 text-base font-bold border border-orange-500/30 animate-pulse">
-                  <Flame className="w-5 h-5 fill-orange-500" /> Hot Role
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-playson-red/20 text-playson-red text-base font-bold border border-playson-red/30 animate-pulse">
+                  <Flame className="w-5 h-5 fill-playson-red" /> Hot Role
                 </span>
               )}
             </h1>
@@ -101,7 +101,7 @@ export default function JobDetails() {
                 href={job.applyUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full font-medium transition-all flex items-center gap-2"
+                className="bg-playson-red hover:bg-red-600 text-white px-8 py-3 rounded-full font-medium transition-all flex items-center gap-2"
               >
                 Apply for this position <ExternalLink className="w-4 h-4" />
               </a>
@@ -136,7 +136,7 @@ export default function JobDetails() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="prose prose-invert prose-orange max-w-none prose-p:text-zinc-300 prose-li:text-zinc-300 prose-headings:text-zinc-100 prose-strong:text-zinc-100 prose-a:text-orange-500 hover:prose-a:text-orange-400"
+              className="prose prose-invert prose-orange max-w-none prose-p:text-zinc-300 prose-li:text-zinc-300 prose-headings:text-zinc-100 prose-strong:text-zinc-100 prose-a:text-playson-red hover:prose-a:text-red-600"
               dangerouslySetInnerHTML={{ __html: job.descriptionHtml }}
             />
             
@@ -149,7 +149,7 @@ export default function JobDetails() {
                 href={job.applyUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-full font-medium transition-all hover:scale-105 active:scale-95"
+                className="inline-flex items-center gap-2 bg-playson-red hover:bg-red-600 text-white px-8 py-4 rounded-full font-medium transition-all hover:scale-105 active:scale-95"
               >
                 Apply for this position <ExternalLink className="w-4 h-4" />
               </a>
@@ -157,7 +157,7 @@ export default function JobDetails() {
           </div>
           
           <div className="lg:col-span-1">
-            <div className={`sticky top-24 bg-zinc-900/50 border rounded-2xl p-6 transition-colors duration-500 ${isHot ? 'border-orange-500/30 shadow-lg shadow-orange-500/5' : 'border-zinc-800'}`}>
+            <div className={`sticky top-24 bg-zinc-900/50 border rounded-2xl p-6 transition-colors duration-500 ${isHot ? 'border-playson-red/30 shadow-lg shadow-playson-red/5' : 'border-zinc-800'}`}>
               <h3 className="text-lg font-semibold mb-4">Job Overview</h3>
               
               <div className="space-y-4">

@@ -62,6 +62,12 @@ export default function Home() {
                           job.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           job.department.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesSearch && !isEngineeringRole(job.title, job.department);
+  }).sort((a, b) => {
+    const aIsHot = differenceInMonths(new Date(), new Date(a.publishedAt)) > 6;
+    const bIsHot = differenceInMonths(new Date(), new Date(b.publishedAt)) > 6;
+    if (aIsHot && !bIsHot) return -1;
+    if (!aIsHot && bIsHot) return 1;
+    return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
   });
 
   const toggleCategory = (category: string) => {
@@ -84,9 +90,9 @@ export default function Home() {
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden min-h-[90vh] flex items-center">
         {/* Dynamic Background */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-orange-500/20 via-zinc-950 to-zinc-950 -z-10" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-playson-red/20 via-zinc-950 to-zinc-950 -z-10" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-[100px] animate-pulse" />
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-playson-red/10 rounded-full blur-[100px] animate-pulse" />
             <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] animate-pulse delay-1000" />
         </div>
         
@@ -105,11 +111,11 @@ export default function Home() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-sm font-medium mb-6 border border-orange-500/20 shadow-[0_0_15px_rgba(249,115,22,0.3)] backdrop-blur-sm"
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-playson-red/10 text-playson-red text-sm font-medium mb-6 border border-playson-red/20 shadow-[0_0_15px_rgba(255,0,42,0.3)] backdrop-blur-sm"
               >
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-playson-red opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-playson-red"></span>
                 </span>
                 We are hiring
               </motion.div>
@@ -117,8 +123,8 @@ export default function Home() {
               <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6 leading-[1.1]">
                 Playson — <br />
                 <span className="relative inline-block">
-                    <span className="absolute -inset-1 bg-gradient-to-r from-orange-500 to-red-500 blur-2xl opacity-20"></span>
-                    <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 pb-2 animate-gradient-x bg-[length:200%_auto]">
+                    <span className="absolute -inset-1 bg-gradient-to-r from-playson-red to-red-600 blur-2xl opacity-20"></span>
+                    <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-playson-red via-red-500 to-red-600 pb-2 animate-gradient-x bg-[length:200%_auto]">
                         a leading supplier
                     </span>
                 </span> <br/>
@@ -130,7 +136,7 @@ export default function Home() {
               </p>
               
               <div className="flex flex-wrap gap-4">
-                <a href="#openings" className="relative group overflow-hidden bg-orange-500 text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(249,115,22,0.4)] flex items-center gap-2">
+                <a href="#openings" className="relative group overflow-hidden bg-playson-red text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,0,42,0.4)] flex items-center gap-2">
                   <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer" />
                   <span className="relative flex items-center gap-2">View Open Roles <ArrowRight className="w-5 h-5" /></span>
                 </a>
@@ -147,32 +153,32 @@ export default function Home() {
               transition={{ duration: 0.7, delay: 0.2 }}
               className="relative hidden lg:block perspective-1000"
             >
-              <div className="relative z-10 bg-zinc-900/60 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl shadow-orange-500/10 transform rotate-2 hover:rotate-0 transition-transform duration-500 group">
+              <div className="relative z-10 bg-zinc-900/60 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl shadow-playson-red/10 transform rotate-2 hover:rotate-0 transition-transform duration-500 group">
                  {/* Shine effect on card */}
                  <div className="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none" />
                  
                  <div className="grid grid-cols-2 gap-6">
-                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50 hover:border-orange-500/30 transition-colors group/item">
-                        <div className="text-4xl font-bold text-white mb-2 group-hover/item:text-orange-400 transition-colors">10k+</div>
+                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50 hover:border-playson-red/30 transition-colors group/item">
+                        <div className="text-4xl font-bold text-white mb-2 group-hover/item:text-playson-red transition-colors">10k+</div>
                         <div className="text-sm text-zinc-400">Websites</div>
                     </div>
-                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50 hover:border-orange-500/30 transition-colors group/item">
-                        <div className="text-4xl font-bold text-white mb-2 group-hover/item:text-orange-400 transition-colors">45m</div>
+                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50 hover:border-playson-red/30 transition-colors group/item">
+                        <div className="text-4xl font-bold text-white mb-2 group-hover/item:text-playson-red transition-colors">45m</div>
                         <div className="text-sm text-zinc-400">Players</div>
                     </div>
-                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50 hover:border-orange-500/30 transition-colors group/item">
-                        <div className="text-4xl font-bold text-white mb-2 group-hover/item:text-orange-400 transition-colors">250+</div>
+                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50 hover:border-playson-red/30 transition-colors group/item">
+                        <div className="text-4xl font-bold text-white mb-2 group-hover/item:text-playson-red transition-colors">250+</div>
                         <div className="text-sm text-zinc-400">Partners</div>
                     </div>
-                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50 hover:border-orange-500/30 transition-colors group/item">
-                        <div className="text-4xl font-bold text-white mb-2 group-hover/item:text-orange-400 transition-colors">27</div>
+                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50 hover:border-playson-red/30 transition-colors group/item">
+                        <div className="text-4xl font-bold text-white mb-2 group-hover/item:text-playson-red transition-colors">27</div>
                         <div className="text-sm text-zinc-400">Jurisdictions</div>
                     </div>
                  </div>
               </div>
 
               {/* Decorative Elements - Enhanced */}
-              <div className="absolute -top-20 -right-20 w-64 h-64 bg-orange-500/20 rounded-full blur-[80px] -z-10 animate-pulse" />
+              <div className="absolute -top-20 -right-20 w-64 h-64 bg-playson-red/20 rounded-full blur-[80px] -z-10 animate-pulse" />
               <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-blue-500/20 rounded-full blur-[80px] -z-10 animate-pulse delay-700" />
             </motion.div>
           </div>

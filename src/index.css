@@ -2,6 +2,7 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
+  --color-playson-red: #FF002A;
   --animate-shimmer: shimmer 2s linear infinite;
   --animate-gradient-x: gradient-x 15s ease infinite;
 
