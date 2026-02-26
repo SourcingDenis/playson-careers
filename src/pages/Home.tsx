@@ -146,35 +146,87 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Hero Visual - General */}
+            {/* Hero Visual - Slot Machine */}
             <motion.div 
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.2 }}
               className="relative hidden lg:block perspective-1000"
             >
-              <div className="relative z-10 bg-zinc-900/60 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl shadow-playson-red/10 transform rotate-2 hover:rotate-0 transition-transform duration-500 group">
-                 {/* Shine effect on card */}
-                 <div className="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none" />
-                 
-                 <div className="grid grid-cols-2 gap-6">
-                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50 hover:border-playson-red/30 transition-colors group/item">
-                        <div className="text-4xl font-bold text-white mb-2 group-hover/item:text-playson-red transition-colors">10k+</div>
-                        <div className="text-sm text-zinc-400">Websites</div>
-                    </div>
-                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50 hover:border-playson-red/30 transition-colors group/item">
-                        <div className="text-4xl font-bold text-white mb-2 group-hover/item:text-playson-red transition-colors">45m</div>
-                        <div className="text-sm text-zinc-400">Players</div>
-                    </div>
-                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50 hover:border-playson-red/30 transition-colors group/item">
-                        <div className="text-4xl font-bold text-white mb-2 group-hover/item:text-playson-red transition-colors">250+</div>
-                        <div className="text-sm text-zinc-400">Partners</div>
-                    </div>
-                    <div className="bg-zinc-950/50 p-6 rounded-2xl border border-zinc-800/50 hover:border-playson-red/30 transition-colors group/item">
-                        <div className="text-4xl font-bold text-white mb-2 group-hover/item:text-playson-red transition-colors">27</div>
-                        <div className="text-sm text-zinc-400">Jurisdictions</div>
+              <div className="relative z-10 bg-zinc-900 border-4 border-zinc-800 rounded-[2rem] p-6 shadow-2xl shadow-playson-red/20 transform rotate-2 hover:rotate-0 transition-transform duration-500 w-full max-w-md mx-auto">
+                 {/* Machine Lights Top */}
+                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-8 bg-zinc-800 rounded-t-xl border-t border-x border-zinc-700 flex items-center justify-center gap-2 z-20">
+                    <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.8)]" />
+                    <div className="w-3 h-3 rounded-full bg-yellow-500 animate-pulse delay-100 shadow-[0_0_10px_rgba(234,179,8,0.8)]" />
+                    <div className="w-3 h-3 rounded-full bg-blue-500 animate-pulse delay-200 shadow-[0_0_10px_rgba(59,130,246,0.8)]" />
+                 </div>
+
+                 {/* Screen Container */}
+                 <div className="bg-zinc-950 rounded-xl border-4 border-zinc-800 p-1 relative overflow-hidden shadow-inner">
+                    {/* Glass Reflection */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent z-20 pointer-events-none rounded-lg" />
+                    
+                    {/* Reels Container */}
+                    <div className="grid grid-cols-3 gap-1 bg-zinc-900 p-1 rounded-lg h-48 overflow-hidden relative">
+                        {/* Reel 1 */}
+                        <div className="bg-zinc-100 rounded flex flex-col items-center justify-start relative overflow-hidden">
+                            <div className="animate-[slot-spin_2s_linear_infinite] flex flex-col items-center w-full">
+                                <span className="text-4xl py-4">🍒</span>
+                                <span className="text-4xl py-4">🍋</span>
+                                <span className="text-4xl py-4">🍊</span>
+                                <span className="text-4xl py-4">💎</span>
+                                <span className="text-4xl py-4">7️⃣</span>
+                                <span className="text-4xl py-4">🔔</span>
+                                <span className="text-4xl py-4">🍒</span>
+                                <span className="text-4xl py-4">🍋</span>
+                            </div>
+                            {/* Blur effect for speed */}
+                            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/20 z-10" />
+                        </div>
+                        {/* Reel 2 */}
+                        <div className="bg-zinc-100 rounded flex flex-col items-center justify-start relative overflow-hidden">
+                            <div className="animate-[slot-spin_2.5s_linear_infinite] flex flex-col items-center w-full">
+                                <span className="text-4xl py-4">💎</span>
+                                <span className="text-4xl py-4">7️⃣</span>
+                                <span className="text-4xl py-4">🔔</span>
+                                <span className="text-4xl py-4">🍒</span>
+                                <span className="text-4xl py-4">🍋</span>
+                                <span className="text-4xl py-4">🍊</span>
+                                <span className="text-4xl py-4">💎</span>
+                                <span className="text-4xl py-4">7️⃣</span>
+                            </div>
+                            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/20 z-10" />
+                        </div>
+                        {/* Reel 3 */}
+                        <div className="bg-zinc-100 rounded flex flex-col items-center justify-start relative overflow-hidden">
+                            <div className="animate-[slot-spin_3s_linear_infinite] flex flex-col items-center w-full">
+                                <span className="text-4xl py-4">7️⃣</span>
+                                <span className="text-4xl py-4">🔔</span>
+                                <span className="text-4xl py-4">🍒</span>
+                                <span className="text-4xl py-4">🍋</span>
+                                <span className="text-4xl py-4">🍊</span>
+                                <span className="text-4xl py-4">💎</span>
+                                <span className="text-4xl py-4">7️⃣</span>
+                                <span className="text-4xl py-4">🔔</span>
+                            </div>
+                            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/20 z-10" />
+                        </div>
+                        
+                        {/* Payline */}
+                        <div className="absolute top-1/2 left-0 w-full h-1 bg-red-500/50 z-30 -translate-y-1/2 shadow-[0_0_10px_rgba(239,68,68,0.8)]" />
                     </div>
                  </div>
+
+                 {/* Machine Bottom */}
+                 <div className="mt-6 flex justify-center">
+                    <div className="bg-gradient-to-b from-zinc-800 to-zinc-900 px-8 py-3 rounded-full border border-zinc-700 shadow-lg relative overflow-hidden group cursor-pointer hover:scale-105 transition-transform">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                        <span className="text-playson-red font-black tracking-widest text-lg drop-shadow-[0_0_10px_rgba(255,0,42,0.5)]">SPIN</span>
+                    </div>
+                 </div>
+                 
+                 {/* Glow Underneath */}
+                 <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-3/4 h-10 bg-playson-red/30 blur-2xl rounded-full -z-10" />
               </div>
 
               {/* Decorative Elements - Enhanced */}
