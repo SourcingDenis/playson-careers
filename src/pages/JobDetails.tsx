@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, MapPin, Clock, Building, Globe, Share2, ExternalLink } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
+import { ArrowLeft, MapPin, Clock, Building, Globe, Share2, ExternalLink, Flame } from 'lucide-react';
+import { differenceInMonths } from 'date-fns';
 import { Job } from './Home';
 
 export default function JobDetails() {
@@ -50,10 +50,12 @@ export default function JobDetails() {
     );
   }
 
+  const isHot = differenceInMonths(new Date(), new Date(job.publishedAt)) > 6;
+
   return (
     <div className="pb-24">
       {/* Header */}
-      <div className="bg-zinc-900/50 border-b border-zinc-800 pt-12 pb-16">
+      <div className={`bg-zinc-900/50 border-b pt-12 pb-16 transition-colors duration-500 ${isHot ? 'border-orange-500/30' : 'border-zinc-800'}`}>
         <div className="mx-auto max-w-4xl px-6">
           <Link to="/" className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-200 transition-colors mb-8">
             <ArrowLeft className="w-4 h-4" /> Back to careers
@@ -64,7 +66,14 @@ export default function JobDetails() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{job.title}</h1>
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 flex flex-wrap items-center gap-4">
+              {job.title}
+              {isHot && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/20 text-orange-500 text-base font-bold border border-orange-500/30 animate-pulse">
+                  <Flame className="w-5 h-5 fill-orange-500" /> Hot Role
+                </span>
+              )}
+            </h1>
             
             <div className="flex flex-wrap items-center gap-4 text-zinc-400 mb-8">
               <div className="flex items-center gap-1.5 bg-zinc-800/50 px-3 py-1.5 rounded-full text-sm">
@@ -148,14 +157,11 @@ export default function JobDetails() {
           </div>
           
           <div className="lg:col-span-1">
-            <div className="sticky top-24 bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6">
+            <div className={`sticky top-24 bg-zinc-900/50 border rounded-2xl p-6 transition-colors duration-500 ${isHot ? 'border-orange-500/30 shadow-lg shadow-orange-500/5' : 'border-zinc-800'}`}>
               <h3 className="text-lg font-semibold mb-4">Job Overview</h3>
               
               <div className="space-y-4">
-                <div>
-                  <div className="text-sm text-zinc-500 mb-1">Posted</div>
-                  <div className="font-medium">{formatDistanceToNow(new Date(job.publishedAt))} ago</div>
-                </div>
+                {/* Posted date removed */}
                 <div>
                   <div className="text-sm text-zinc-500 mb-1">Department</div>
                   <div className="font-medium">{job.department}</div>
