@@ -57,6 +57,34 @@ export default function Engineering() {
            ['engineering', 'product', 'game', 'platform', 'tech'].some(k => lowerDept.includes(k));
   };
 
+  const getTechStack = (description: string) => {
+    const stack = [];
+    const lowerDesc = description.toLowerCase();
+    
+    const techMap: Record<string, { icon: string, label: string, color: string }> = {
+      'react': { icon: '⚛️', label: 'React', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20' },
+      'typescript': { icon: 'TS', label: 'TypeScript', color: 'bg-blue-600/10 text-blue-400 border-blue-600/20' },
+      'node': { icon: '🟢', label: 'Node.js', color: 'bg-green-500/10 text-green-400 border-green-500/20' },
+      'c#': { icon: '#', label: 'C#', color: 'bg-purple-500/10 text-purple-400 border-purple-500/20' },
+      'c++': { icon: '++', label: 'C++', color: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20' },
+      'go': { icon: '🐹', label: 'Go', color: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20' },
+      'unity': { icon: '🎮', label: 'Unity', color: 'bg-zinc-500/10 text-zinc-300 border-zinc-500/20' },
+      'aws': { icon: '☁️', label: 'AWS', color: 'bg-orange-500/10 text-orange-400 border-orange-500/20' },
+      'kubernetes': { icon: '☸️', label: 'K8s', color: 'bg-blue-400/10 text-blue-300 border-blue-400/20' },
+      'docker': { icon: '🐳', label: 'Docker', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20' },
+      'sql': { icon: '🗄️', label: 'SQL', color: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' },
+      'python': { icon: '🐍', label: 'Python', color: 'bg-yellow-400/10 text-yellow-300 border-yellow-400/20' },
+      'java': { icon: '☕', label: 'Java', color: 'bg-red-500/10 text-red-400 border-red-500/20' },
+    };
+
+    for (const [key, value] of Object.entries(techMap)) {
+      if (lowerDesc.includes(key)) {
+        stack.push(value);
+      }
+    }
+    return stack.slice(0, 4); // Limit to 4 items
+  };
+
   const filteredJobs = jobs.filter(job => {
     const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           job.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -347,6 +375,18 @@ export default function Engineering() {
                                               </span>
                                             )}
                                         </h3>
+
+                                        {/* Tech Stack Badges */}
+                                        {getTechStack(job.descriptionHtml || '').length > 0 && (
+                                            <div className="flex flex-wrap gap-2 mb-3">
+                                                {getTechStack(job.descriptionHtml || '').map((tech, i) => (
+                                                    <span key={i} className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-medium border ${tech.color.replace('text-', 'border-').replace('bg-', 'bg-opacity-10 ')} bg-zinc-900/50`}>
+                                                        <span>{tech.icon}</span> {tech.label}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+
                                         <div className="flex flex-wrap gap-4 text-sm text-zinc-400">
                                             <div className="flex items-center gap-1.5">
                                             <Building className="w-4 h-4" />

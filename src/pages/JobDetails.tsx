@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, MapPin, Clock, Building, Globe, Share2, ExternalLink, Flame } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, Building, Globe, Share2, ExternalLink, Flame, ArrowRight } from 'lucide-react';
 import { differenceInMonths } from 'date-fns';
 import { Job } from './Home';
 
@@ -9,6 +9,8 @@ export default function JobDetails() {
   const { id } = useParams<{ id: string }>();
   const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const [similarJobs, setSimilarJobs] = useState<Job[]>([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -20,6 +22,28 @@ export default function JobDetails() {
         const listData = await listRes.json();
         const found = listData.jobs?.find((j: Job) => j.id === id);
         setJob(found || null);
+
+        if (found && listData.jobs) {
+            // Find similar jobs: same department AND same location, excluding current job
+            // If not enough, fallback to same department
+            let similar = listData.jobs.filter((j: Job) => 
+                j.id !== found.id && 
+                j.department === found.department &&
+                j.location === found.location
+            );
+
+            if (similar.length < 3) {
+                const sameDept = listData.jobs.filter((j: Job) => 
+                    j.id !== found.id && 
+                    j.department === found.department &&
+                    !similar.includes(j)
+                );
+                similar = [...similar, ...sameDept];
+            }
+
+            setSimilarJobs(similar.slice(0, 3));
+        }
+
       } catch (err) {
         console.error(err);
       } finally {
@@ -50,6 +74,41 @@ export default function JobDetails() {
     );
   }
 
+  const isEngineeringRole = (title: string, dept: string) => {
+    const lowerTitle = title.toLowerCase();
+    const lowerDept = dept.toLowerCase();
+    return ['engineer', 'developer', 'architect', 'qa', 'tech', 'data', 'software'].some(k => lowerTitle.includes(k)) ||
+           ['engineering', 'product', 'game', 'platform', 'tech'].some(k => lowerDept.includes(k));
+  };
+
+  const getTechStack = (description: string) => {
+    const stack = [];
+    const lowerDesc = description.toLowerCase();
+    
+    const techMap: Record<string, { icon: string, label: string, color: string }> = {
+      'react': { icon: '⚛️', label: 'React', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20' },
+      'typescript': { icon: 'TS', label: 'TypeScript', color: 'bg-blue-600/10 text-blue-400 border-blue-600/20' },
+      'node': { icon: '🟢', label: 'Node.js', color: 'bg-green-500/10 text-green-400 border-green-500/20' },
+      'c#': { icon: '#', label: 'C#', color: 'bg-purple-500/10 text-purple-400 border-purple-500/20' },
+      'c++': { icon: '++', label: 'C++', color: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20' },
+      'go': { icon: '🐹', label: 'Go', color: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20' },
+      'unity': { icon: '🎮', label: 'Unity', color: 'bg-zinc-500/10 text-zinc-300 border-zinc-500/20' },
+      'aws': { icon: '☁️', label: 'AWS', color: 'bg-orange-500/10 text-orange-400 border-orange-500/20' },
+      'kubernetes': { icon: '☸️', label: 'K8s', color: 'bg-blue-400/10 text-blue-300 border-blue-400/20' },
+      'docker': { icon: '🐳', label: 'Docker', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20' },
+      'sql': { icon: '🗄️', label: 'SQL', color: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' },
+      'python': { icon: '🐍', label: 'Python', color: 'bg-yellow-400/10 text-yellow-300 border-yellow-400/20' },
+      'java': { icon: '☕', label: 'Java', color: 'bg-red-500/10 text-red-400 border-red-500/20' },
+    };
+
+    for (const [key, value] of Object.entries(techMap)) {
+      if (lowerDesc.includes(key)) {
+        stack.push(value);
+      }
+    }
+    return stack.slice(0, 4);
+  };
+
   const isHot = differenceInMonths(new Date(), new Date(job.publishedAt)) > 6;
 
   return (
@@ -66,7 +125,7 @@ export default function JobDetails() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 flex flex-wrap items-center gap-4">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 flex flex-wrap items-center gap-4">
               {job.title}
               {isHot && (
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-playson-red/20 text-playson-red text-base font-bold border border-playson-red/30 animate-pulse">
@@ -74,6 +133,17 @@ export default function JobDetails() {
                 </span>
               )}
             </h1>
+
+            {/* Tech Stack Badges */}
+            {isEngineeringRole(job.title, job.department) && getTechStack(job.descriptionHtml || '').length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-6">
+                    {getTechStack(job.descriptionHtml || '').map((tech, i) => (
+                        <span key={i} className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium border ${tech.color.replace('text-', 'border-').replace('bg-', 'bg-opacity-10 ')} bg-zinc-900/50`}>
+                            <span>{tech.icon}</span> {tech.label}
+                        </span>
+                    ))}
+                </div>
+            )}
             
             <div className="flex flex-wrap items-center gap-4 text-zinc-400 mb-8">
               <div className="flex items-center gap-1.5 bg-zinc-800/50 px-3 py-1.5 rounded-full text-sm">
@@ -154,6 +224,43 @@ export default function JobDetails() {
                 Apply for this position <ExternalLink className="w-4 h-4" />
               </a>
             </div>
+
+            {/* Similar Roles Section */}
+            {similarJobs.length > 0 && (
+                <div className="mt-24 pt-12 border-t border-zinc-800">
+                    <h3 className="text-2xl font-bold mb-8">You might also like</h3>
+                    <div className="grid gap-4">
+                        {similarJobs.map((similarJob) => (
+                            <Link 
+                                key={similarJob.id}
+                                to={`/job/${similarJob.id}`}
+                                className="group block bg-zinc-900/30 border border-zinc-800 rounded-2xl p-6 transition-all hover:bg-zinc-900 hover:border-playson-red/30 hover:shadow-lg hover:shadow-playson-red/5"
+                            >
+                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                    <div>
+                                        <h4 className="text-lg font-semibold text-zinc-100 group-hover:text-playson-red transition-colors mb-2">
+                                            {similarJob.title}
+                                        </h4>
+                                        <div className="flex flex-wrap gap-4 text-sm text-zinc-400">
+                                            <div className="flex items-center gap-1.5">
+                                                <Building className="w-3.5 h-3.5" />
+                                                {similarJob.department}
+                                            </div>
+                                            <div className="flex items-center gap-1.5">
+                                                <MapPin className="w-3.5 h-3.5" />
+                                                {similarJob.location}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center group-hover:bg-playson-red group-hover:text-white transition-colors">
+                                        <ArrowRight className="w-4 h-4" />
+                                    </div>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            )}
           </div>
           
           <div className="lg:col-span-1">

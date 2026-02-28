@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import Engineering from './pages/Engineering';
 import JobDetails from './pages/JobDetails';
 import Layout from './components/Layout';
+import CookieConsent from './components/CookieConsent';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
           <Route path="/job/:id" element={<JobDetails />} />
         </Routes>
       </Layout>
+      <CookieConsent />
     </Router>
   );
 }

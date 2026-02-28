@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { MapPin, Clock, Building, Globe, ArrowRight, Zap, Server, Globe2, Activity, Users, Cpu, MessageCircle, Gift, GraduationCap, Heart, PartyPopper, Calendar, Search, Sparkles, ExternalLink, ShieldCheck, Handshake, ChevronDown, ChevronUp, Flame } from 'lucide-react';
@@ -16,88 +16,6 @@ export interface Job {
   jobUrl: string;
   applyUrl: string;
   descriptionHtml: string;
-}
-
-// ─── Hero Section Helpers ───────────────────────────────────────────────────
-
-const HERO_PARTICLES = [
-  { left: '3%',  size: '3px', delay: '0s',    duration: '7s'  },
-  { left: '9%',  size: '2px', delay: '1.8s',  duration: '9s'  },
-  { left: '16%', size: '4px', delay: '0.4s',  duration: '6s'  },
-  { left: '23%', size: '2px', delay: '3.1s',  duration: '8s'  },
-  { left: '30%', size: '3px', delay: '0.9s',  duration: '10s' },
-  { left: '38%', size: '2px', delay: '2.5s',  duration: '7.5s'},
-  { left: '46%', size: '4px', delay: '4.2s',  duration: '8.5s'},
-  { left: '53%', size: '2px', delay: '1.3s',  duration: '6.5s'},
-  { left: '61%', size: '3px', delay: '0.2s',  duration: '9s'  },
-  { left: '68%', size: '2px', delay: '3.7s',  duration: '7s'  },
-  { left: '75%', size: '4px', delay: '1.0s',  duration: '8s'  },
-  { left: '82%', size: '2px', delay: '2.2s',  duration: '10s' },
-  { left: '88%', size: '3px', delay: '0.7s',  duration: '6.5s'},
-  { left: '94%', size: '2px', delay: '4.5s',  duration: '7.5s'},
-  { left: '98%', size: '3px', delay: '0.5s',  duration: '9s'  },
-];
-
-const PARTICLE_COLORS = [
-  'bg-playson-red/60', 'bg-orange-400/50', 'bg-white/25',
-  'bg-violet-400/40', 'bg-blue-400/40',   'bg-white/30',
-  'bg-playson-red/40','bg-orange-300/50', 'bg-white/20',
-  'bg-blue-300/40',   'bg-playson-red/50','bg-orange-400/40',
-  'bg-white/25',      'bg-violet-300/40', 'bg-playson-red/35',
-];
-
-function useCountUp(target: number, durationMs = 1800) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        const start = Date.now();
-        const tick = () => {
-          const p = Math.min((Date.now() - start) / durationMs, 1);
-          setCount(Math.round((1 - Math.pow(1 - p, 3)) * target));
-          if (p < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-        observer.disconnect();
-      }
-    }, { threshold: 0.3 });
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [target, durationMs]);
-  return { count, ref };
-}
-
-interface StatCardProps {
-  target: number;
-  suffix: string;
-  label: string;
-  color: string;
-  glowColor: string;
-  icon: ReactNode;
-  delay: number;
-}
-
-function StatCard({ target, suffix, label, color, glowColor, icon, delay }: StatCardProps) {
-  const { count, ref } = useCountUp(target);
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20, scale: 0.85 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-      className="bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-2xl p-5 flex flex-col items-center text-center gap-1.5 hover:scale-105 transition-transform duration-300 group relative overflow-hidden cursor-default"
-      style={{ boxShadow: `0 0 20px ${glowColor}` }}
-    >
-      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-           style={{ background: `radial-gradient(circle at 50% 0%, ${glowColor} 0%, transparent 70%)` }} />
-      <div className={`${color} mb-0.5`}>{icon}</div>
-      <div className={`text-3xl font-bold tabular-nums ${color}`}>{count.toLocaleString()}{suffix}</div>
-      <div className="text-xs text-zinc-400 uppercase tracking-wider font-medium">{label}</div>
-    </motion.div>
-  );
 }
 
 export default function Home() {
@@ -139,6 +57,8 @@ export default function Home() {
            ['engineering', 'product', 'game', 'platform', 'tech'].some(k => lowerDept.includes(k));
   };
 
+  const engineeringJobsCount = jobs.filter(job => isEngineeringRole(job.title, job.department)).length;
+
   const filteredJobs = jobs.filter(job => {
     const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           job.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -167,230 +87,98 @@ export default function Home() {
     return acc;
   }, {} as Record<string, Job[]>);
 
-  const heroStats: StatCardProps[] = [
-    { target: 45,   suffix: 'm+', label: 'Players',       color: 'text-playson-red', glowColor: 'rgba(255,0,42,0.35)',   icon: <Users className="w-5 h-5" />,      delay: 0.5  },
-    { target: 10,   suffix: 'k+', label: 'Websites',      color: 'text-orange-400',  glowColor: 'rgba(251,146,60,0.35)', icon: <Globe2 className="w-5 h-5" />,     delay: 0.65 },
-    { target: 250,  suffix: '+',  label: 'Partners',      color: 'text-blue-400',    glowColor: 'rgba(96,165,250,0.35)', icon: <Handshake className="w-5 h-5" />, delay: 0.8  },
-    { target: 27,   suffix: '',   label: 'Jurisdictions', color: 'text-emerald-400', glowColor: 'rgba(52,211,153,0.35)', icon: <ShieldCheck className="w-5 h-5" />,delay: 0.95 },
-  ];
-
   return (
     <div className="pb-0 bg-zinc-950 text-zinc-50">
-      {/* Hero */}
-      <section className="relative pt-32 pb-24 overflow-hidden min-h-screen flex items-center">
-
-        {/* ── BACKGROUND: Rich multi-color aurora base ── */}
-        <div className="absolute inset-0 -z-20"
-          style={{ background: 'radial-gradient(ellipse at 15% 50%, #1c0010 0%, #07050f 55%, #000000 100%)' }} />
-
-        {/* ── Large glow orbs (4 colors) ── */}
-        <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
-          <div className="absolute -top-40 -right-24 w-[700px] h-[700px] rounded-full bg-playson-red/25 blur-[140px] animate-glow-breathe" style={{ animationDelay: '0s' }} />
-          <div className="absolute top-1/3 -left-40 w-[650px] h-[650px] rounded-full bg-violet-600/20 blur-[130px] animate-glow-breathe" style={{ animationDelay: '1.2s' }} />
-          <div className="absolute -bottom-48 left-1/4 w-[600px] h-[600px] rounded-full bg-blue-600/18 blur-[120px] animate-glow-breathe" style={{ animationDelay: '0.6s' }} />
-          <div className="absolute top-1/2 right-1/4 w-[450px] h-[450px] rounded-full bg-orange-500/15 blur-[100px] animate-pulse" style={{ animationDelay: '1.8s' }} />
-          <div className="absolute bottom-0 right-0 w-[350px] h-[350px] rounded-full bg-rose-600/12 blur-[90px] animate-glow-breathe" style={{ animationDelay: '0.9s' }} />
+      {/* Hero - Modern & Animated */}
+      <section className="relative pt-32 pb-32 overflow-hidden min-h-[90vh] flex items-center justify-center">
+        {/* Background Effects */}
+        <div className="absolute inset-0 bg-zinc-950">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+            <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-playson-red/10 via-transparent to-transparent blur-[100px] opacity-30" />
         </div>
 
-        {/* ── Animated grid overlay ── */}
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_75%_65%_at_50%_50%,#000_50%,transparent_100%)]" />
-
-        {/* ── Floating particles (deterministic) ── */}
-        <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
-          {HERO_PARTICLES.map((p, i) => (
-            <div
-              key={i}
-              className={`absolute bottom-0 rounded-full ${PARTICLE_COLORS[i % PARTICLE_COLORS.length]} animate-particle`}
-              style={{ left: p.left, width: p.size, height: p.size, animationDelay: p.delay, animationDuration: p.duration }}
-            />
-          ))}
-        </div>
-
-        {/* ── Main content grid ── */}
         <div className="mx-auto max-w-7xl px-6 w-full relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-
-            {/* Left: Text content */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              className="max-w-2xl"
-            >
-              {/* "We are hiring" badge */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 }}
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-playson-red/12 text-playson-red text-sm font-semibold mb-8 border border-playson-red/35 shadow-[0_0_28px_rgba(255,0,42,0.55)] backdrop-blur-sm"
-              >
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-playson-red opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-playson-red" />
-                </span>
-                We are hiring
-              </motion.div>
-
-              {/* Headline — word-by-word staggered reveal */}
-              <motion.h1
-                className="text-5xl md:text-7xl font-bold tracking-tighter mb-6 leading-[1.1]"
-                variants={{
-                  hidden: {},
-                  visible: { transition: { staggerChildren: 0.09, delayChildren: 0.3 } },
-                }}
+            <motion.div 
                 initial="hidden"
                 animate="visible"
-              >
-                {(['Playson'] as const).map((word, i) => (
-                  <motion.span key={i} className="inline-block"
-                    variants={{ hidden: { opacity: 0, y: 24, filter: 'blur(4px)' }, visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.5 } } }}>
-                    {word}
-                  </motion.span>
-                ))}
-                {' '}
-                <motion.span className="inline-block text-zinc-500"
-                  variants={{ hidden: { opacity: 0, y: 24, filter: 'blur(4px)' }, visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.5 } } }}>
-                  —
-                </motion.span>
-                <br />
-                <motion.span className="inline-block"
-                  variants={{ hidden: { opacity: 0, y: 24, filter: 'blur(4px)' }, visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.5 } } }}>
-                  a leading{' '}
-                </motion.span>
-                <motion.span className="relative inline-block"
-                  variants={{ hidden: { opacity: 0, y: 28, filter: 'blur(8px)', scale: 0.95 }, visible: { opacity: 1, y: 0, filter: 'blur(0px)', scale: 1, transition: { duration: 0.65 } } }}>
-                  <span className="absolute -inset-2 bg-gradient-to-r from-playson-red to-orange-500 blur-2xl opacity-35 animate-glow-breathe" />
-                  <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-playson-red via-orange-400 to-red-500 pb-2 animate-gradient-x bg-[length:200%_auto]">
-                    supplier
-                  </span>
-                </motion.span>
-                <br />
-                <motion.span className="inline-block"
-                  variants={{ hidden: { opacity: 0, y: 24, filter: 'blur(4px)' }, visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.5 } } }}>
-                  of slot games.
-                </motion.span>
-              </motion.h1>
-
-              {/* Description */}
-              <motion.p
-                className="text-xl text-zinc-400 mb-10 leading-relaxed max-w-lg"
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.85, duration: 0.5 }}
-              >
-                Playson passionately serves customers worldwide by creating a commercially successful portfolio of regulated and mobile-focused products.
-              </motion.p>
-
-              {/* CTA buttons */}
-              <motion.div
-                className="flex flex-wrap gap-4"
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.0, duration: 0.5 }}
-              >
-                <a href="#openings" className="relative group overflow-hidden bg-playson-red text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-[0_0_32px_rgba(255,0,42,0.55)] hover:shadow-[0_0_55px_rgba(255,0,42,0.75)] flex items-center gap-2">
-                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer" />
-                  <span className="relative flex items-center gap-2">View Open Roles <ArrowRight className="w-5 h-5" /></span>
-                </a>
-                <Link to="/engineering" className="bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 px-8 py-4 rounded-full font-medium transition-all border border-zinc-700/60 hover:border-zinc-500 flex items-center gap-2 hover:shadow-[0_0_20px_rgba(255,255,255,0.08)] backdrop-blur-sm">
-                  Engineering Careers <Cpu className="w-4 h-4" />
-                </Link>
-              </motion.div>
-            </motion.div>
-
-            {/* Right: Orbital visual + stats */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.88 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="relative hidden lg:flex flex-col items-center gap-10"
+                variants={{
+                    hidden: { opacity: 0 },
+                    visible: {
+                        opacity: 1,
+                        transition: {
+                            staggerChildren: 0.15,
+                            delayChildren: 0.2
+                        }
+                    }
+                }}
+                className="flex flex-col items-center text-center"
             >
-              {/* Central orbiting element */}
-              <div className="relative flex items-center justify-center w-[280px] h-[280px] animate-float">
-                {/* Outer spinning ring with orbiting dot */}
-                <div className="absolute w-[270px] h-[270px] rounded-full border border-white/6 animate-spin-slow">
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-playson-red shadow-[0_0_14px_rgba(255,0,42,0.9),0_0_28px_rgba(255,0,42,0.5)]" />
-                </div>
-                {/* Middle ring (reverse) with orbiting dot */}
-                <div className="absolute w-[200px] h-[200px] rounded-full border border-orange-500/20 animate-spin-slow-reverse">
-                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-2.5 h-2.5 rounded-full bg-orange-400 shadow-[0_0_12px_rgba(251,146,60,0.9)]" />
-                </div>
-                {/* Inner subtle ring */}
-                <div className="absolute w-[145px] h-[145px] rounded-full border border-playson-red/15" />
-                {/* Central glowing orb */}
-                <div className="relative z-10 w-28 h-28 rounded-full flex items-center justify-center">
-                  <div className="absolute inset-0 rounded-full bg-playson-red/35 blur-xl animate-glow-breathe" />
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-playson-red/85 to-red-900/65 border border-playson-red/50 shadow-[0_0_45px_rgba(255,0,42,0.55),0_0_90px_rgba(255,0,42,0.25)]" />
-                  <Zap className="relative w-12 h-12 text-white drop-shadow-lg" />
-                </div>
-                {/* Sparkle accents */}
-                {[
-                  { top: '8%',   left: '18%',  delay: '0s',   size: 'w-1.5 h-1.5', color: 'bg-playson-red' },
-                  { top: '12%',  right: '16%', delay: '0.8s', size: 'w-1 h-1',     color: 'bg-orange-400' },
-                  { bottom: '8%',left: '22%',  delay: '1.4s', size: 'w-1.5 h-1.5', color: 'bg-violet-400' },
-                  { bottom:'10%',right: '20%', delay: '0.5s', size: 'w-1 h-1',     color: 'bg-blue-400'   },
-                ].map((s, i) => (
-                  <div
-                    key={i}
-                    className={`absolute ${s.size} rounded-full ${s.color} animate-sparkle`}
-                    style={{ top: s.top, left: s.left, right: (s as { right?: string }).right, bottom: s.bottom, animationDelay: s.delay } as CSSProperties}
-                  />
-                ))}
-              </div>
+                <motion.div
+                    variants={{
+                        hidden: { opacity: 0, y: 20, filter: 'blur(10px)' },
+                        visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] } }
+                    }}
+                    className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/50 border border-zinc-800 text-zinc-400 text-sm font-medium mb-8 backdrop-blur-sm hover:border-playson-red/50 transition-colors cursor-default"
+                >
+                    <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-playson-red opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-playson-red"></span>
+                    </span>
+                    We are hiring
+                </motion.div>
 
-              {/* 2×2 stat cards with animated counters */}
-              <div className="grid grid-cols-2 gap-4 w-full max-w-[360px]">
-                {heroStats.map(({ target, suffix, label, color, glowColor, icon, delay }, i) => (
-                  <StatCard key={i} target={target} suffix={suffix} label={label} color={color} glowColor={glowColor} icon={icon} delay={delay} />
-                ))}
-              </div>
+                <motion.h1
+                    variants={{
+                        hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
+                        visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] } }
+                    }}
+                    className="text-6xl md:text-8xl font-bold tracking-tighter mb-8 bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-zinc-500"
+                >
+                    Shape the Future <br />
+                    of <span className="text-playson-red">iGaming</span>
+                </motion.h1>
 
-              {/* Ambient corner glows */}
-              <div className="absolute -top-16 -right-12 w-44 h-44 bg-violet-600/20 rounded-full blur-[60px] -z-10 animate-glow-breathe" style={{ animationDelay: '1s' }} />
-              <div className="absolute -bottom-4 -left-12 w-44 h-44 bg-blue-500/18 rounded-full blur-[60px] -z-10 animate-glow-breathe" style={{ animationDelay: '2s' }} />
+                <motion.p
+                    variants={{
+                        hidden: { opacity: 0, y: 20, filter: 'blur(5px)' },
+                        visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] } }
+                    }}
+                    className="text-xl text-zinc-400 max-w-2xl mb-12 leading-relaxed"
+                >
+                    Join a world-class team building the next generation of entertainment. 
+                    We combine creativity, technology, and data to create unforgettable experiences.
+                </motion.p>
+
+                <motion.div
+                    variants={{
+                        hidden: { opacity: 0, y: 20, filter: 'blur(5px)' },
+                        visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] } }
+                    }}
+                    className="flex flex-wrap justify-center gap-4"
+                >
+                    <a href="#openings" className="group relative px-8 py-4 bg-playson-red rounded-full font-bold text-white shadow-[0_0_40px_-10px_rgba(255,0,42,0.5)] hover:shadow-[0_0_60px_-15px_rgba(255,0,42,0.6)] transition-all hover:scale-105 active:scale-95 overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                        <span className="relative flex items-center gap-2">
+                            View Open Roles <ArrowRight className="w-5 h-5" />
+                        </span>
+                    </a>
+                    <Link to="/engineering" className="relative inline-flex overflow-hidden rounded-full p-[1px] hover:scale-105 transition-transform duration-300">
+                        <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#FF002A_50%,#000000_100%)]" />
+                        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-zinc-900 px-8 py-4 text-sm font-medium text-white backdrop-blur-3xl">
+                            Engineering <Cpu className="ml-2 w-4 h-4" />
+                            {engineeringJobsCount > 0 && (
+                                <span className="ml-2 rounded-full bg-playson-red/20 px-2 py-0.5 text-xs font-bold text-playson-red">
+                                    {engineeringJobsCount}
+                                </span>
+                            )}
+                        </span>
+                    </Link>
+                </motion.div>
             </motion.div>
-
-          </div>
-
-          {/* Scroll indicator */}
-          <motion.div
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 cursor-pointer select-none"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.6, duration: 0.5 }}
-            onClick={() => document.getElementById('openings')?.scrollIntoView({ behavior: 'smooth' })}
-          >
-            <span className="text-xs text-zinc-600 uppercase tracking-widest font-medium">Scroll</span>
-            <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}>
-              <ChevronDown className="w-5 h-5 text-zinc-600" />
-            </motion.div>
-          </motion.div>
         </div>
       </section>
 
-      {/* Partners Section (Simplified) */}
-      <section className="py-20 bg-zinc-900/30 border-y border-zinc-800/50">
-        <div className="mx-auto max-w-7xl px-6">
-            <div className="bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-3xl p-12 border border-zinc-800 text-center relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-full bg-[url('https://playson.com/frontend/img/bg/main-about-slot-bg3.jpg')] bg-cover opacity-10 mix-blend-overlay pointer-events-none"></div>
-                <div className="relative z-10">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange-500/10 mb-6">
-                        <Handshake className="w-8 h-8 text-orange-500" />
-                    </div>
-                    <h2 className="text-4xl font-bold mb-6">Partnering with like-minded people</h2>
-                    <p className="text-xl text-zinc-400 max-w-3xl mx-auto mb-12">
-                        With more than 10 years of industry experience, we collaborate with iGaming Leaders for joint development, sharing entertainment and fun with everyone.
-                    </p>
-                    <div className="flex flex-wrap justify-center gap-12 items-center opacity-90">
-                        <h3 className="text-3xl font-bold text-white tracking-tighter hover:text-orange-400 transition-colors cursor-default">ICE <span className="font-light">LONDON</span></h3>
-                        <h3 className="text-3xl font-bold text-white tracking-tight hover:text-orange-400 transition-colors cursor-default">SBC <span className="text-orange-500">SUMMIT</span></h3>
-                        <h3 className="text-3xl font-extrabold text-white italic hover:text-orange-400 transition-colors cursor-default">iGB <span className="font-normal">Live!</span></h3>
-                        <h3 className="text-3xl font-bold text-white hover:text-orange-400 transition-colors cursor-default">SiGMA <span className="text-sm align-top">EUROPE</span></h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-      </section>
+
 
       {/* Locations */}
       <section className="py-20">
@@ -480,7 +268,140 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Job List */}
+      {/* Life at Playson - Dynamic Culture Grid */}
+      <section className="py-24 bg-zinc-950 border-y border-zinc-900 relative overflow-hidden">
+        {/* Decorative background */}
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-zinc-900/20 to-transparent -z-10" />
+        
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-800/50 text-zinc-300 text-sm font-medium mb-4 border border-zinc-700/50"
+              >
+                <Heart className="w-4 h-4 text-playson-red" />
+                <span>Our Culture</span>
+              </motion.div>
+              <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+                Life at <span className="text-playson-red">Playson</span>
+              </h2>
+            </div>
+            <p className="text-zinc-400 max-w-md text-lg leading-relaxed">
+              More than just code and games. We are a community of creators, thinkers, and friends.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[240px]">
+            
+            {/* 1. Hero: Rooftop Party (Spans 2 cols, 2 rows) */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-3xl"
+            >
+              <img 
+                src="https://cdn.prod.website-files.com/677bda6af407d3b963833347/68f0237d808e202302316e6d_photo_2024-08-28_10-27-28.jpg" 
+                alt="Rooftop Celebration" 
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90" />
+              <div className="absolute bottom-0 left-0 p-8">
+                <span className="inline-block px-3 py-1 bg-playson-red text-white text-xs font-bold rounded-full mb-3">CELEBRATION</span>
+                <h3 className="text-2xl font-bold text-white mb-2">Milestones & Memories</h3>
+                <p className="text-zinc-300 text-sm max-w-md">
+                  We celebrate our wins together. From rooftop parties to team anniversaries, every achievement is shared.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* 2. Work: Meeting Room (1 col, 1 row) */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="relative group overflow-hidden rounded-3xl bg-zinc-900"
+            >
+              <img 
+                src="https://cdn.prod.website-files.com/677bda6af407d3b963833347/68f0237d808e202302316e61_photo_2024-08-28_10-27-31.jpg" 
+                alt="Collaboration" 
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <div className="absolute bottom-6 left-6">
+                 <h3 className="text-lg font-bold text-white">We Build Together</h3>
+              </div>
+            </motion.div>
+
+            {/* 3. Stat Card (1 col, 1 row) */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="relative overflow-hidden rounded-3xl bg-playson-red p-8 flex flex-col justify-between group"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10 transition-transform duration-500 group-hover:scale-150" />
+              <div className="relative z-10">
+                <Users className="w-8 h-8 text-white mb-4" />
+                <div className="text-5xl font-bold text-white mb-2">350+</div>
+                <div className="text-white/80 font-medium">Playsoners Worldwide</div>
+              </div>
+              <div className="relative z-10 mt-4 pt-4 border-t border-white/20">
+                <div className="flex items-center gap-2 text-white text-sm font-bold">
+                  Join the family <ArrowRight className="w-4 h-4" />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* 4. Energy: Stage Party (1 col, 2 rows) */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="md:row-span-2 relative group overflow-hidden rounded-3xl bg-zinc-800"
+            >
+               <img 
+                src="https://cdn.prod.website-files.com/677bda6af407d3b963833347/68f0237d808e202302316e59_photo_2024-08-28_10-27-24.jpg" 
+                alt="Stage Party" 
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6">
+                 <h3 className="text-xl font-bold text-white mb-2">Unforgettable Events</h3>
+                 <p className="text-zinc-400 text-sm">When we party, we party hard. Music, lights, and energy.</p>
+              </div>
+            </motion.div>
+
+            {/* 5. Team: Big Group Photo (2 cols, 1 row) */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-zinc-900"
+            >
+              <img 
+                src="https://cdn.prod.website-files.com/677bda6af407d3b963833347/68f0237d808e202302316e69_photo_2024-08-28_10-27-35.jpg" 
+                alt="Global Team" 
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <div className="absolute bottom-6 left-6">
+                 <h3 className="text-xl font-bold text-white">One Global Team</h3>
+                 <p className="text-zinc-300 text-sm">United by passion, driven by innovation.</p>
+              </div>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
       <section id="openings" className="mx-auto max-w-7xl px-6 py-24 border-t border-zinc-800/50">
         <div className="mb-12 text-center md:text-left">
           <h2 className="text-5xl font-bold mb-6">Join Playson</h2>
@@ -517,22 +438,63 @@ export default function Home() {
           </div>
         ) : (
           <div className="space-y-16">
-            {/* Engineering Link Banner */}
-            <div className="p-8 rounded-3xl bg-gradient-to-r from-zinc-900 to-zinc-950 border border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden group">
-                <div className="absolute inset-0 bg-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-2">
-                        <Cpu className="w-6 h-6 text-orange-500" />
-                        <h3 className="text-2xl font-bold text-white">Looking for Engineering roles?</h3>
+            {/* Engineering Link Banner - Enhanced */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900/50 p-1 group"
+            >
+                <div className="absolute inset-0 bg-gradient-to-r from-playson-red/10 via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-500" />
+                
+                {/* Content Container */}
+                <div className="relative flex flex-col md:flex-row items-center justify-between gap-8 rounded-[1.4rem] bg-zinc-950/80 p-8 md:p-12 backdrop-blur-xl transition-all duration-500 hover:bg-zinc-950/60">
+                    
+                    {/* Decorative Circuit/Grid Background */}
+                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_0%_50%,#000_70%,transparent_100%)] opacity-50 pointer-events-none" />
+
+                    <div className="relative z-10 flex-1">
+                        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-playson-red/30 bg-playson-red/10 px-3 py-1 text-sm font-medium text-playson-red">
+                            <Cpu className="h-4 w-4 animate-pulse" />
+                            <span>Engineering Hub</span>
+                        </div>
+                        
+                        <h3 className="mb-3 text-3xl font-bold text-white md:text-4xl">
+                            Building the <span className="text-transparent bg-clip-text bg-gradient-to-r from-playson-red to-red-500">Next Gen</span> Platform?
+                        </h3>
+                        
+                        <p className="max-w-xl text-lg text-zinc-400">
+                            Join our specialized Engineering & Product teams. We have a dedicated portal for technical roles, architecture deep-dives, and our tech stack.
+                        </p>
+                        
+                        {engineeringJobsCount > 0 && (
+                            <div className="mt-6 flex items-center gap-3 text-sm font-medium text-zinc-300">
+                                <div className="flex -space-x-2">
+                                    {[...Array(3)].map((_, i) => (
+                                        <div key={i} className="h-8 w-8 rounded-full border-2 border-zinc-950 bg-zinc-800 flex items-center justify-center text-xs text-zinc-500">
+                                            <Users className="h-4 w-4" />
+                                        </div>
+                                    ))}
+                                </div>
+                                <span><span className="text-playson-red font-bold">{engineeringJobsCount} open positions</span> waiting for you</span>
+                            </div>
+                        )}
                     </div>
-                    <p className="text-zinc-400 max-w-xl">
-                        We have a dedicated portal for our technical positions. Check out our Engineering & Product opportunities.
-                    </p>
+
+                    <div className="relative z-10">
+                        <Link 
+                            to="/engineering" 
+                            className="group/btn relative flex items-center gap-3 overflow-hidden rounded-full bg-playson-red px-8 py-4 text-lg font-bold text-white shadow-[0_0_40px_-10px_rgba(255,0,42,0.4)] transition-all hover:scale-105 hover:shadow-[0_0_60px_-10px_rgba(255,0,42,0.6)] active:scale-95"
+                        >
+                            <span className="relative z-10">Visit Engineering Hub</span>
+                            <ArrowRight className="relative z-10 h-5 w-5 transition-transform group-hover/btn:translate-x-1" />
+                            
+                            {/* Shine Effect */}
+                            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover/btn:translate-x-full" />
+                        </Link>
+                    </div>
                 </div>
-                <Link to="/engineering" className="relative z-10 bg-white text-black hover:bg-zinc-200 px-8 py-3 rounded-full font-medium transition-colors flex items-center gap-2 whitespace-nowrap">
-                    Go to Engineering <ArrowRight className="w-4 h-4" />
-                </Link>
-            </div>
+            </motion.div>
 
             {/* Other Roles - Categorized */}
             {filteredJobs.length > 0 ? (
@@ -563,10 +525,10 @@ export default function Home() {
                                     >
                                         <Link 
                                         to={`/job/${job.id}`}
-                                        className={`group block bg-zinc-900/50 border rounded-2xl p-6 transition-all hover:bg-zinc-900 hover:shadow-lg ${
+                                        className={`group block bg-zinc-900/50 border rounded-2xl p-6 transition-all duration-300 hover:bg-zinc-900 hover:shadow-xl hover:scale-[1.02] ${
                                           differenceInMonths(new Date(), new Date(job.publishedAt)) > 6 
-                                            ? 'border-blue-500/50 animate-pulse hover:animate-none hover:border-blue-500 hover:shadow-blue-500/20' 
-                                            : 'border-zinc-800 hover:border-blue-500/50 hover:shadow-blue-500/5'
+                                            ? 'border-playson-red/50 animate-pulse hover:animate-none hover:border-playson-red hover:shadow-playson-red/20' 
+                                            : 'border-zinc-800 hover:border-playson-red/50 hover:shadow-playson-red/5'
                                         }`}
                                         >
                                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -646,6 +608,30 @@ export default function Home() {
           <a href="https://jobs.ashbyhq.com/playson/form/general-interest" target="_blank" rel="noreferrer" className="bg-white text-black hover:bg-zinc-200 px-8 py-3 rounded-full font-medium transition-colors">
             Submit
           </a>
+        </div>
+      </section>
+
+      {/* Partners Section (Simplified) */}
+      <section className="py-20 bg-zinc-900/30 border-y border-zinc-800/50">
+        <div className="mx-auto max-w-7xl px-6">
+            <div className="bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-3xl p-12 border border-zinc-800 text-center relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-full bg-[url('https://playson.com/frontend/img/bg/main-about-slot-bg3.jpg')] bg-cover opacity-10 mix-blend-overlay pointer-events-none"></div>
+                <div className="relative z-10">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-playson-red/10 mb-6">
+                        <Handshake className="w-8 h-8 text-playson-red" />
+                    </div>
+                    <h2 className="text-4xl font-bold mb-6">Partnering with like-minded people</h2>
+                    <p className="text-xl text-zinc-400 max-w-3xl mx-auto mb-12">
+                        With more than 10 years of industry experience, we collaborate with iGaming Leaders for joint development, sharing entertainment and fun with everyone.
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-12 items-center opacity-90">
+                        <h3 className="text-3xl font-bold text-white tracking-tighter hover:text-playson-red transition-colors cursor-default">ICE <span className="font-light">LONDON</span></h3>
+                        <h3 className="text-3xl font-bold text-white tracking-tight hover:text-playson-red transition-colors cursor-default">SBC <span className="text-playson-red">SUMMIT</span></h3>
+                        <h3 className="text-3xl font-extrabold text-white italic hover:text-playson-red transition-colors cursor-default">iGB <span className="font-normal">Live!</span></h3>
+                        <h3 className="text-3xl font-bold text-white hover:text-playson-red transition-colors cursor-default">SiGMA <span className="text-sm align-top">EUROPE</span></h3>
+                    </div>
+                </div>
+            </div>
         </div>
       </section>
 
