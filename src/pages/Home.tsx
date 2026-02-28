@@ -60,9 +60,11 @@ export default function Home() {
   const engineeringJobsCount = jobs.filter(job => isEngineeringRole(job.title, job.department)).length;
 
   const filteredJobs = jobs.filter(job => {
-    const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          job.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          job.department.toLowerCase().includes(searchQuery.toLowerCase());
+    const query = searchQuery.toLowerCase();
+    const matchesSearch = job.title.toLowerCase().includes(query) ||
+                          job.location.toLowerCase().includes(query) ||
+                          job.department.toLowerCase().includes(query) ||
+                          (query === 'remote' && job.isRemote);
     return matchesSearch && !isEngineeringRole(job.title, job.department);
   }).sort((a, b) => {
     const aIsHot = differenceInMonths(new Date(), new Date(a.publishedAt)) > 6;
