@@ -107,8 +107,14 @@ export default function JobDetails() {
   const isEngineeringRole = (title: string, dept: string) => {
     const lowerTitle = title.toLowerCase();
     const lowerDept = dept.toLowerCase();
-    return ['engineer', 'developer', 'architect', 'qa', 'tech', 'data', 'software'].some(k => lowerTitle.includes(k)) ||
-           ['engineering', 'product', 'game', 'platform', 'tech'].some(k => lowerDept.includes(k));
+    
+    // Explicitly exclude non-technical roles that might trigger false positives
+    if (['legal', 'counsel', 'hr', 'talent', 'recruiter', 'finance', 'account', 'sales', 'marketing', 'artist', 'animator', 'illustrator'].some(k => lowerTitle.includes(k))) {
+        return false;
+    }
+
+    return ['engineer', 'developer', 'architect', 'qa', 'tech', 'data', 'software', 'sre', 'devops', 'full stack', 'backend', 'frontend'].some(k => lowerTitle.includes(k)) ||
+           ['engineering', 'platform', 'technology', 'r&d', 'devops'].some(k => lowerDept.includes(k));
   };
 
   const getTechStack = (description: string) => {
@@ -132,8 +138,25 @@ export default function JobDetails() {
     };
 
     for (const [key, value] of Object.entries(techMap)) {
-      if (lowerDesc.includes(key)) {
-        stack.push(value);
+      // Special handling for C# and C++ (symbols) vs words
+      if (key === 'c#' || key === 'c++') {
+         // Check for exact match with surrounding spaces or punctuation if needed, 
+         // but simple includes is usually safe for these specific symbols 
+         // unless "C#" appears in "ABC#" (unlikely).
+         // Better: check for "c#" or "c++" surrounded by non-word chars or start/end
+         // But simple includes is probably fine for these unique tokens.
+         if (lowerDesc.includes(key)) stack.push(value);
+      } else {
+         // Use regex for whole word matching to avoid "go" matching "good", "aws" matching "paws"
+         try {
+             const regex = new RegExp(`\\b${key}\\b`, 'i');
+             if (regex.test(lowerDesc)) {
+                 stack.push(value);
+             }
+         } catch (e) {
+             // Fallback
+             if (lowerDesc.includes(key)) stack.push(value);
+         }
       }
     }
     return stack.slice(0, 4);

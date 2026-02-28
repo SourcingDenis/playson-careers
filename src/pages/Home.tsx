@@ -49,12 +49,12 @@ export default function Home() {
     const lowerDept = dept.toLowerCase();
     
     // Exclude non-engineering roles that might match keywords
-    if (lowerTitle.includes('artist') || lowerTitle.includes('animator') || lowerTitle.includes('illustrator') || lowerTitle.includes('sound designer')) {
+    if (['legal', 'counsel', 'hr', 'talent', 'recruiter', 'finance', 'account', 'sales', 'marketing', 'artist', 'animator', 'illustrator'].some(k => lowerTitle.includes(k))) {
       return false;
     }
 
     return engineeringKeywords.some(keyword => lowerTitle.includes(keyword)) || 
-           ['engineering', 'product', 'game', 'platform', 'tech'].some(k => lowerDept.includes(k));
+           ['engineering', 'platform', 'technology', 'r&d', 'devops'].some(k => lowerDept.includes(k));
   };
 
   const engineeringJobsCount = jobs.filter(job => isEngineeringRole(job.title, job.department)).length;
@@ -154,25 +154,37 @@ export default function Home() {
                         hidden: { opacity: 0, y: 20, filter: 'blur(5px)' },
                         visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] } }
                     }}
-                    className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 w-full sm:w-auto px-4"
+                    className="flex flex-col items-center gap-8 w-full px-4"
                 >
-                    <a href="#openings" className="group relative w-full sm:w-auto px-8 py-4 bg-playson-red rounded-full font-bold text-white shadow-[0_0_40px_-10px_rgba(255,0,42,0.5)] hover:shadow-[0_0_60px_-15px_rgba(255,0,42,0.6)] transition-all hover:scale-105 active:scale-95 overflow-hidden flex justify-center">
+                    <a href="#openings" className="group relative w-full sm:w-auto px-10 py-5 bg-playson-red rounded-full font-bold text-white text-lg shadow-[0_0_40px_-10px_rgba(255,0,42,0.5)] hover:shadow-[0_0_60px_-15px_rgba(255,0,42,0.6)] transition-all hover:scale-105 active:scale-95 overflow-hidden flex justify-center items-center">
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                         <span className="relative flex items-center gap-2">
                             View Open Roles <ArrowRight className="w-5 h-5" />
                         </span>
                     </a>
-                    <Link to="/engineering" className="relative inline-flex w-full sm:w-auto overflow-hidden rounded-full p-[1px] hover:scale-105 transition-transform duration-300">
-                        <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#FF002A_50%,#000000_100%)]" />
-                        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-zinc-900 px-8 py-4 text-sm font-medium text-white backdrop-blur-3xl">
-                            Engineering <Cpu className="ml-2 w-4 h-4" />
-                            {engineeringJobsCount > 0 && (
-                                <span className="ml-2 rounded-full bg-playson-red/20 px-2 py-0.5 text-xs font-bold text-playson-red">
-                                    {engineeringJobsCount}
-                                </span>
-                            )}
-                        </span>
-                    </Link>
+
+                    {/* Quick Filter Chips */}
+                    <div className="flex flex-wrap justify-center gap-3">
+                        {[
+                            { label: 'Engineering', icon: Cpu },
+                            { label: 'Product', icon: Zap },
+                            { label: 'Remote', icon: Globe },
+                            { label: 'Malta', icon: MapPin },
+                            { label: 'Slovakia', icon: MapPin },
+                        ].map((chip) => (
+                            <button
+                                key={chip.label}
+                                onClick={() => {
+                                    setSearchQuery(chip.label);
+                                    document.getElementById('openings')?.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900/50 border border-zinc-800 text-zinc-400 text-sm font-medium hover:text-white hover:border-playson-red/50 hover:bg-zinc-900 transition-all active:scale-95"
+                            >
+                                <chip.icon className="w-3.5 h-3.5" />
+                                {chip.label}
+                            </button>
+                        ))}
+                    </div>
                 </motion.div>
             </motion.div>
         </div>
