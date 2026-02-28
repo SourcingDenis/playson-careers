@@ -6,6 +6,7 @@ import { differenceInMonths } from 'date-fns';
 import { toPng } from 'html-to-image';
 import download from 'downloadjs';
 import { Job } from './Home';
+import SocialShareExplainer from '../components/SocialShareExplainer';
 
 export default function JobDetails() {
   const { id } = useParams<{ id: string }>();
@@ -260,19 +261,6 @@ export default function JobDetails() {
                     {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Share2 className="w-4 h-4" />}
                     {copied ? 'Copied!' : 'Copy Link'}
                   </button>
-
-                  <button 
-                    onClick={handleShare}
-                    disabled={generatingCard}
-                    className="flex-1 sm:flex-none bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-4 py-3.5 rounded-full font-medium transition-all flex items-center justify-center gap-2 border border-zinc-700 hover:border-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                    title="Download Social Card"
-                  >
-                    {generatingCard ? (
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    ) : (
-                        <Download className="w-4 h-4" />
-                    )}
-                  </button>
               </div>
             </div>
           </motion.div>
@@ -307,7 +295,7 @@ export default function JobDetails() {
             </div>
           </div>
           
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 space-y-8">
             <div className={`sticky top-24 bg-zinc-900/50 border rounded-2xl p-6 transition-colors duration-500 ${isHot ? 'border-playson-red/30 shadow-lg shadow-playson-red/5' : 'border-zinc-800'}`}>
               <h3 className="text-lg font-semibold mb-4">Job Overview</h3>
               
@@ -332,6 +320,9 @@ export default function JobDetails() {
                 </div>
               </div>
             </div>
+
+            {/* Social Share Explainer Component */}
+            <SocialShareExplainer onDownload={handleShare} isGenerating={generatingCard} />
           </div>
         </div>
       </div>

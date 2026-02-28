@@ -381,13 +381,13 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* 4. Energy: Dynamic Rhythm (1 col, 2 rows) */}
+            {/* 4. Energy: Dynamic Rhythm (1 col, 1 row) */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="md:row-span-2 relative group overflow-hidden rounded-3xl bg-zinc-900 border border-zinc-800"
+              className="relative group overflow-hidden rounded-3xl bg-zinc-900 border border-zinc-800"
             >
                {/* Equalizer Animation */}
                <div className="absolute inset-0 flex items-center justify-center gap-2 opacity-40 group-hover:opacity-60 transition-opacity">
@@ -403,7 +403,7 @@ export default function Home() {
                <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent" />
                <div className="absolute bottom-6 left-6 right-6">
                   <h3 className="text-xl font-bold text-white mb-2">High Energy</h3>
-                  <p className="text-zinc-400 text-sm">We work hard and celebrate harder. A culture of passion and drive.</p>
+                  <p className="text-zinc-400 text-sm">We work hard and celebrate harder.</p>
                </div>
             </motion.div>
 
