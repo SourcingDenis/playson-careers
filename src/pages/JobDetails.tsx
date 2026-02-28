@@ -1,16 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, MapPin, Clock, Building, Globe, Share2, ExternalLink, Flame, ArrowRight } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, Building, Globe, Share2, ExternalLink, Flame, ArrowRight, Download, Linkedin, Check } from 'lucide-react';
 import { differenceInMonths } from 'date-fns';
+import { toPng } from 'html-to-image';
+import download from 'downloadjs';
 import { Job } from './Home';
 
 export default function JobDetails() {
   const { id } = useParams<{ id: string }>();
   const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
+  const [generatingCard, setGeneratingCard] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const [similarJobs, setSimilarJobs] = useState<Job[]>([]);
+
+  const handleCopyLink = async () => {
+    try {
+        await navigator.clipboard.writeText(window.location.href);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+        console.error('Failed to copy:', err);
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -53,6 +68,20 @@ export default function JobDetails() {
 
     fetchData();
   }, [id]);
+
+  const handleShare = async () => {
+    if (cardRef.current) {
+      setGeneratingCard(true);
+      try {
+        const dataUrl = await toPng(cardRef.current, { cacheBust: true, pixelRatio: 2 });
+        download(dataUrl, `playson-hiring-${job?.title.replace(/\s+/g, '-').toLowerCase()}.png`);
+      } catch (err) {
+        console.error('Failed to generate image', err);
+      } finally {
+        setGeneratingCard(false);
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -112,10 +141,57 @@ export default function JobDetails() {
   const isHot = differenceInMonths(new Date(), new Date(job.publishedAt)) > 6;
 
   return (
-    <div className="pb-24">
+    <div className="pb-24 relative">
+      {/* Hidden Share Card for Generation */}
+      {job && (
+        <div 
+            ref={cardRef} 
+            className="fixed top-0 left-0 -z-50 w-[1200px] h-[630px] bg-zinc-950 p-16 flex flex-col justify-between border-8 border-playson-red"
+            style={{ fontFamily: 'Inter, sans-serif' }}
+        >
+            {/* Background Elements */}
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-playson-red/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3" />
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4" />
+            
+            <div className="relative z-10">
+                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-zinc-800/50 text-zinc-300 text-xl font-medium mb-8 border border-zinc-700/50">
+                    <span className="w-3 h-3 rounded-full bg-playson-red animate-pulse" />
+                    We are hiring
+                </div>
+                <h1 className="text-7xl font-bold text-white tracking-tight mb-6 leading-tight max-w-4xl">
+                    {job.title}
+                </h1>
+                <div className="flex items-center gap-6 text-zinc-400 text-2xl">
+                    <div className="flex items-center gap-2">
+                        <Building className="w-6 h-6" /> {job.department}
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <MapPin className="w-6 h-6" /> {job.location}
+                    </div>
+                </div>
+            </div>
+
+            <div className="relative z-10 flex items-end justify-between">
+                <div className="flex gap-4">
+                    {/* Tech Stack Preview (First 3) */}
+                    {isEngineeringRole(job.title, job.department) && getTechStack(job.descriptionHtml || '').slice(0, 3).map((tech, i) => (
+                        <div key={i} className="flex items-center gap-3 px-6 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-200 text-xl font-medium">
+                            <span>{tech.icon}</span> {tech.label}
+                        </div>
+                    ))}
+                </div>
+                
+                <div className="text-right">
+                    <div className="text-3xl font-bold text-white mb-2">playson.com/careers</div>
+                    <div className="text-playson-red text-xl font-medium">#PlaysonLife</div>
+                </div>
+            </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className={`bg-zinc-900/50 border-b pt-12 pb-16 transition-colors duration-500 ${isHot ? 'border-playson-red/30' : 'border-zinc-800'}`}>
-        <div className="mx-auto max-w-4xl px-6">
+        <div className="mx-auto max-w-4xl px-4 md:px-6">
           <Link to="/" className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-200 transition-colors mb-8">
             <ArrowLeft className="w-4 h-4" /> Back to careers
           </Link>
@@ -125,7 +201,7 @@ export default function JobDetails() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 flex flex-wrap items-center gap-4">
+            <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 flex flex-wrap items-center gap-4">
               {job.title}
               {isHot && (
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-playson-red/20 text-playson-red text-base font-bold border border-playson-red/30 animate-pulse">
@@ -165,42 +241,47 @@ export default function JobDetails() {
                 {job.employmentType}
               </div>
             </div>
-
-            <div className="flex flex-wrap gap-4">
+          
+            <div className="flex flex-col sm:flex-row gap-4">
               <a 
                 href={job.applyUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="bg-playson-red hover:bg-red-600 text-white px-8 py-3 rounded-full font-medium transition-all flex items-center gap-2"
+                className="bg-playson-red hover:bg-red-600 text-white px-8 py-3.5 rounded-full font-medium transition-all flex items-center justify-center gap-2 shadow-lg shadow-playson-red/20 hover:shadow-playson-red/40 hover:-translate-y-0.5"
               >
                 Apply for this position <ExternalLink className="w-4 h-4" />
               </a>
-              <button 
-                onClick={async () => {
-                  try {
-                    await navigator.clipboard.writeText(window.location.href);
-                    const btn = document.getElementById('share-btn-text');
-                    if (btn) btn.innerText = 'Copied!';
-                    setTimeout(() => {
-                      if (btn) btn.innerText = 'Share';
-                    }, 2000);
-                  } catch (err) {
-                    console.error('Failed to copy:', err);
-                    alert('Failed to copy link to clipboard');
-                  }
-                }}
-                className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2 min-w-[120px] justify-center"
-              >
-                <Share2 className="w-4 h-4" /> <span id="share-btn-text">Share</span>
-              </button>
+              
+              <div className="flex gap-2 w-full sm:w-auto">
+                  <button 
+                    onClick={handleCopyLink}
+                    className="flex-1 sm:flex-none bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-6 py-3.5 rounded-full font-medium transition-all flex items-center justify-center gap-2 border border-zinc-700 hover:border-zinc-600"
+                  >
+                    {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Share2 className="w-4 h-4" />}
+                    {copied ? 'Copied!' : 'Copy Link'}
+                  </button>
+
+                  <button 
+                    onClick={handleShare}
+                    disabled={generatingCard}
+                    className="flex-1 sm:flex-none bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-4 py-3.5 rounded-full font-medium transition-all flex items-center justify-center gap-2 border border-zinc-700 hover:border-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="Download Social Card"
+                  >
+                    {generatingCard ? (
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : (
+                        <Download className="w-4 h-4" />
+                    )}
+                  </button>
+              </div>
             </div>
           </motion.div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="mx-auto max-w-4xl px-6 mt-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="mx-auto max-w-4xl px-4 md:px-6 mt-12 md:mt-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
           <div className="lg:col-span-2">
             <motion.div 
               initial={{ opacity: 0 }}
@@ -210,7 +291,7 @@ export default function JobDetails() {
               dangerouslySetInnerHTML={{ __html: job.descriptionHtml }}
             />
             
-            <div className="mt-16 pt-12 border-t border-zinc-800">
+            <div className="mt-12 md:mt-16 pt-8 md:pt-12 border-t border-zinc-800">
               <h2 className="text-2xl font-bold mb-6">Ready to apply?</h2>
               <p className="text-zinc-400 mb-8">
                 Join our team and help us build the future of iGaming.
@@ -219,48 +300,11 @@ export default function JobDetails() {
                 href={job.applyUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 bg-playson-red hover:bg-red-600 text-white px-8 py-4 rounded-full font-medium transition-all hover:scale-105 active:scale-95"
+                className="inline-flex items-center gap-2 bg-playson-red hover:bg-red-600 text-white px-8 py-4 rounded-full font-medium transition-all hover:scale-105 active:scale-95 shadow-lg shadow-playson-red/20"
               >
                 Apply for this position <ExternalLink className="w-4 h-4" />
               </a>
             </div>
-
-            {/* Similar Roles Section */}
-            {similarJobs.length > 0 && (
-                <div className="mt-24 pt-12 border-t border-zinc-800">
-                    <h3 className="text-2xl font-bold mb-8">You might also like</h3>
-                    <div className="grid gap-4">
-                        {similarJobs.map((similarJob) => (
-                            <Link 
-                                key={similarJob.id}
-                                to={`/job/${similarJob.id}`}
-                                className="group block bg-zinc-900/30 border border-zinc-800 rounded-2xl p-6 transition-all hover:bg-zinc-900 hover:border-playson-red/30 hover:shadow-lg hover:shadow-playson-red/5"
-                            >
-                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                    <div>
-                                        <h4 className="text-lg font-semibold text-zinc-100 group-hover:text-playson-red transition-colors mb-2">
-                                            {similarJob.title}
-                                        </h4>
-                                        <div className="flex flex-wrap gap-4 text-sm text-zinc-400">
-                                            <div className="flex items-center gap-1.5">
-                                                <Building className="w-3.5 h-3.5" />
-                                                {similarJob.department}
-                                            </div>
-                                            <div className="flex items-center gap-1.5">
-                                                <MapPin className="w-3.5 h-3.5" />
-                                                {similarJob.location}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center group-hover:bg-playson-red group-hover:text-white transition-colors">
-                                        <ArrowRight className="w-4 h-4" />
-                                    </div>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            )}
           </div>
           
           <div className="lg:col-span-1">
@@ -268,7 +312,6 @@ export default function JobDetails() {
               <h3 className="text-lg font-semibold mb-4">Job Overview</h3>
               
               <div className="space-y-4">
-                {/* Posted date removed */}
                 <div>
                   <div className="text-sm text-zinc-500 mb-1">Department</div>
                   <div className="font-medium">{job.department}</div>

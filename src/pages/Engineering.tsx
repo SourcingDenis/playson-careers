@@ -121,14 +121,14 @@ export default function Engineering() {
   return (
     <div className="pb-0 bg-zinc-950 text-zinc-50">
       {/* Hero */}
-      <section className="relative pt-32 pb-20 overflow-hidden min-h-[90vh] flex items-center">
+      <section className="relative pt-24 pb-16 md:pt-32 md:pb-20 overflow-hidden min-h-[90vh] flex items-center">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-playson-red/10 via-zinc-950 to-zinc-950 -z-10" />
         
         {/* Animated Grid Background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] -z-10" />
 
-        <div className="mx-auto max-w-7xl px-6 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="mx-auto max-w-7xl px-4 md:px-6 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -143,20 +143,20 @@ export default function Engineering() {
                 Hiring Engineers & Product Leaders
               </div>
               
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6 leading-[1.1]">
+              <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tighter mb-6 leading-[1.1]">
                 xPlatform. <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-playson-red to-red-600 inline-block pb-2">Built for Scale.</span>
               </h1>
               
-              <p className="text-xl text-zinc-400 mb-10 leading-relaxed max-w-lg">
+              <p className="text-lg md:text-xl text-zinc-400 mb-10 leading-relaxed max-w-lg">
                 Join the team building a highly adaptable solution that provides superior gaming and business experience through flexible API, powerful BI tools, and streamlined integration.
               </p>
               
-              <div className="flex flex-wrap gap-4">
-                <a href="#openings" className="bg-playson-red hover:bg-red-600 text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-lg shadow-playson-red/25 flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-4">
+                <a href="#openings" className="bg-playson-red hover:bg-red-600 text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-lg shadow-playson-red/25 flex items-center justify-center gap-2">
                   View Open Roles <ArrowRight className="w-5 h-5" />
                 </a>
-                <a href="https://playson.com/x-platform" target="_blank" rel="noreferrer" className="bg-zinc-900 hover:bg-zinc-800 text-zinc-200 px-8 py-4 rounded-full font-medium transition-all border border-zinc-800 hover:border-zinc-700 flex items-center gap-2">
+                <a href="https://playson.com/x-platform" target="_blank" rel="noreferrer" className="bg-zinc-900 hover:bg-zinc-800 text-zinc-200 px-8 py-4 rounded-full font-medium transition-all border border-zinc-800 hover:border-zinc-700 flex items-center justify-center gap-2">
                   About xPlatform <ExternalLink className="w-4 h-4" />
                 </a>
               </div>
@@ -211,9 +211,9 @@ export default function Engineering() {
       </section>
 
       {/* Platform Section */}
-      <section className="py-20 bg-zinc-900/30 border-y border-zinc-800/50">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <section className="py-16 md:py-20 bg-zinc-900/30 border-y border-zinc-800/50">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -256,7 +256,7 @@ export default function Engineering() {
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mt-16 md:mt-20">
             {[
               { label: 'Uptime', value: '99.99%', sub: 'Powered by AWS', icon: Activity },
               { label: 'Transactions / s', value: '7000+', sub: 'High-load capacity', icon: Zap },
@@ -282,11 +282,11 @@ export default function Engineering() {
       </section>
 
       {/* Tech Stack */}
-      <section className="py-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-4xl font-bold mb-4">Our tech stack:</h2>
-          <p className="text-zinc-400 mb-12 max-w-2xl">Built with modern technologies for performance and scale.</p>
-          <div className="bg-white/5 rounded-3xl p-8 md:p-12 flex items-center justify-center">
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Our tech stack:</h2>
+          <p className="text-zinc-400 mb-8 md:mb-12 max-w-2xl">Built with modern technologies for performance and scale.</p>
+          <div className="bg-white/5 rounded-3xl p-6 md:p-12 flex items-center justify-center">
             <img 
               src="https://cdn.prod.website-files.com/69038a3e1adee10d6f7b7485/698b141f97b50900460d42af_Group%2022.svg" 
               alt="Tech Stack" 
@@ -297,17 +297,17 @@ export default function Engineering() {
       </section>
 
       {/* Job List */}
-      <section id="openings" className="mx-auto max-w-7xl px-6 py-24 border-t border-zinc-800/50">
-        <div className="mb-12 text-center md:text-left">
-          <h2 className="text-5xl font-bold mb-6">Join Playson Engineering</h2>
-          <p className="text-xl text-zinc-400 max-w-2xl">
+      <section id="openings" className="mx-auto max-w-7xl px-4 md:px-6 py-16 md:py-24 border-t border-zinc-800/50">
+        <div className="mb-8 md:mb-12 text-center md:text-left">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6">Join Playson Engineering</h2>
+          <p className="text-lg md:text-xl text-zinc-400 max-w-2xl">
             We combine agility, ownership, and deep technical expertise to deliver products that millions of people enjoy daily.
           </p>
         </div>
 
-        <div className="flex flex-col gap-8 mb-12">
+        <div className="flex flex-col gap-6 md:gap-8 mb-8 md:mb-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <h3 className="text-2xl font-bold tracking-tight">Open Technical Roles</h3>
+            <h3 className="text-xl md:text-2xl font-bold tracking-tight">Open Technical Roles</h3>
             
             {/* Search Input */}
             <div className="relative w-full md:w-96">
@@ -333,7 +333,7 @@ export default function Engineering() {
           </div>
         ) : (
           <div className="space-y-8">
-            {Object.entries(jobsByDepartment).map(([dept, deptJobs]) => {
+            {Object.entries(jobsByDepartment).map(([dept, deptJobs]: [string, Job[]]) => {
                 const isExpanded = expandedCategories[dept];
                 const displayedJobs = isExpanded ? deptJobs : deptJobs.slice(0, 5);
                 const hasMore = deptJobs.length > 5;
@@ -344,7 +344,7 @@ export default function Engineering() {
                             <div className="p-2 bg-playson-red/10 rounded-lg">
                                 <Cpu className="w-5 h-5 text-playson-red" />
                             </div>
-                            <h3 className="text-2xl font-bold text-white">{dept}</h3>
+                            <h3 className="text-xl md:text-2xl font-bold text-white">{dept}</h3>
                             <span className="bg-zinc-800 text-zinc-400 text-xs px-2 py-1 rounded-full">{deptJobs.length}</span>
                         </div>
 
@@ -359,15 +359,15 @@ export default function Engineering() {
                                 >
                                     <Link 
                                     to={`/job/${job.id}`}
-                                    className={`group block bg-zinc-900/50 border rounded-2xl p-6 transition-all hover:bg-zinc-900 hover:shadow-lg ${
+                                    className={`group block bg-zinc-900/50 border rounded-2xl p-4 md:p-6 transition-all hover:bg-zinc-900 hover:shadow-lg ${
                                       differenceInMonths(new Date(), new Date(job.publishedAt)) > 6 
                                         ? 'border-playson-red/50 animate-pulse hover:animate-none hover:border-playson-red hover:shadow-playson-red/20' 
                                         : 'border-zinc-800 hover:border-playson-red/50 hover:shadow-playson-red/5'
                                     }`}
                                     >
-                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6">
                                         <div>
-                                        <h3 className="text-xl font-semibold text-zinc-100 group-hover:text-playson-red transition-colors mb-3 flex items-center gap-2">
+                                        <h3 className="text-lg md:text-xl font-semibold text-zinc-100 group-hover:text-playson-red transition-colors mb-3 flex items-center gap-2 flex-wrap">
                                             {job.title}
                                             {differenceInMonths(new Date(), new Date(job.publishedAt)) > 6 && (
                                               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-playson-red/20 text-playson-red text-xs font-bold border border-playson-red/30 animate-pulse">
@@ -387,7 +387,7 @@ export default function Engineering() {
                                             </div>
                                         )}
 
-                                        <div className="flex flex-wrap gap-4 text-sm text-zinc-400">
+                                        <div className="flex flex-wrap gap-3 md:gap-4 text-sm text-zinc-400">
                                             <div className="flex items-center gap-1.5">
                                             <Building className="w-4 h-4" />
                                             {job.department}
@@ -405,9 +405,9 @@ export default function Engineering() {
                                         </div>
                                         </div>
                                         
-                                        <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center group-hover:bg-playson-red group-hover:text-white transition-colors">
-                                            <ArrowRight className="w-5 h-5" />
+                                        <div className="flex items-center gap-4 self-end md:self-auto">
+                                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-zinc-800 flex items-center justify-center group-hover:bg-playson-red group-hover:text-white transition-colors">
+                                            <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
                                         </div>
                                         </div>
                                     </div>
@@ -433,7 +433,7 @@ export default function Engineering() {
             })}
 
             {filteredJobs.length === 0 && (
-              <div className="text-center py-24 text-zinc-500 bg-zinc-900/30 rounded-3xl border border-zinc-800 border-dashed">
+              <div className="text-center py-16 md:py-24 text-zinc-500 bg-zinc-900/30 rounded-3xl border border-zinc-800 border-dashed">
                 <p className="text-lg">No open engineering positions found matching your criteria.</p>
                 <button 
                   onClick={() => {setSearchQuery('');}}
@@ -446,12 +446,12 @@ export default function Engineering() {
           </div>
         )}
 
-        <div className="mt-12 p-8 rounded-3xl bg-zinc-900/30 border border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-8">
+        <div className="mt-12 p-6 md:p-8 rounded-3xl bg-zinc-900/30 border border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 text-center md:text-left">
           <div>
-            <h3 className="text-xl font-bold mb-2">Don’t see your role listed?</h3>
+            <h3 className="text-lg md:text-xl font-bold mb-2">Don’t see your role listed?</h3>
             <p className="text-zinc-400">Submit your information and we’ll reach out soon.</p>
           </div>
-          <a href="https://jobs.ashbyhq.com/playson/form/general-interest" target="_blank" rel="noreferrer" className="bg-white text-black hover:bg-zinc-200 px-8 py-3 rounded-full font-medium transition-colors">
+          <a href="https://jobs.ashbyhq.com/playson/form/general-interest" target="_blank" rel="noreferrer" className="w-full md:w-auto bg-white text-black hover:bg-zinc-200 px-8 py-3 rounded-full font-medium transition-colors inline-block">
             Submit
           </a>
         </div>
