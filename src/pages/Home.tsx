@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { MapPin, Clock, Building, Globe, ArrowRight, Zap, Server, Globe2, Activity, Users, Cpu, MessageCircle, Gift, GraduationCap, Heart, PartyPopper, Calendar, Search, Sparkles, ExternalLink, ShieldCheck, Handshake, ChevronDown, ChevronUp, Flame } from 'lucide-react';
 import { differenceInMonths } from 'date-fns';
+import { isEngineeringRole } from '../utils/jobUtils';
 
 export interface Job {
   id: string;
@@ -36,26 +37,6 @@ export default function Home() {
         setLoading(false);
       });
   }, []);
-
-  const engineeringKeywords = [
-    'engineer', 'developer', 'qa', 'tech', 'data', 'platform', 'game', 
-    'c++', 'c#', 'go', 'server', 'client', 'frontend', 'backend', 
-    'full stack', 'devops', 'sre', 'software', 'architect', 'product', 
-    'unity', 'java', 'net', 'node', 'react', 'typescript', 'javascript'
-  ];
-
-  const isEngineeringRole = (title: string, dept: string) => {
-    const lowerTitle = title.toLowerCase();
-    const lowerDept = dept.toLowerCase();
-    
-    // Exclude non-engineering roles that might match keywords
-    if (['legal', 'counsel', 'hr', 'talent', 'recruiter', 'finance', 'account', 'sales', 'marketing', 'artist', 'animator', 'illustrator'].some(k => lowerTitle.includes(k))) {
-      return false;
-    }
-
-    return engineeringKeywords.some(keyword => lowerTitle.includes(keyword)) || 
-           ['engineering', 'platform', 'technology', 'r&d', 'devops'].some(k => lowerDept.includes(k));
-  };
 
   const engineeringJobsCount = jobs.filter(job => isEngineeringRole(job.title, job.department)).length;
 

@@ -7,6 +7,7 @@ import { toPng } from 'html-to-image';
 import download from 'downloadjs';
 import { Job } from './Home';
 import SocialShareExplainer from '../components/SocialShareExplainer';
+import { getTechStack, isEngineeringRole } from '../utils/jobUtils';
 
 export default function JobDetails() {
   const { id } = useParams<{ id: string }>();
@@ -104,64 +105,6 @@ export default function JobDetails() {
     );
   }
 
-  const isEngineeringRole = (title: string, dept: string) => {
-    const lowerTitle = title.toLowerCase();
-    const lowerDept = dept.toLowerCase();
-    
-    // Explicitly exclude non-technical roles that might trigger false positives
-    if (['legal', 'counsel', 'hr', 'talent', 'recruiter', 'finance', 'account', 'sales', 'marketing', 'artist', 'animator', 'illustrator'].some(k => lowerTitle.includes(k))) {
-        return false;
-    }
-
-    return ['engineer', 'developer', 'architect', 'qa', 'tech', 'data', 'software', 'sre', 'devops', 'full stack', 'backend', 'frontend'].some(k => lowerTitle.includes(k)) ||
-           ['engineering', 'platform', 'technology', 'r&d', 'devops'].some(k => lowerDept.includes(k));
-  };
-
-  const getTechStack = (description: string) => {
-    const stack = [];
-    const lowerDesc = description.toLowerCase();
-    
-    const techMap: Record<string, { icon: string, label: string, color: string }> = {
-      'react': { icon: '⚛️', label: 'React', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20' },
-      'typescript': { icon: 'TS', label: 'TypeScript', color: 'bg-blue-600/10 text-blue-400 border-blue-600/20' },
-      'node': { icon: '🟢', label: 'Node.js', color: 'bg-green-500/10 text-green-400 border-green-500/20' },
-      'c#': { icon: '#', label: 'C#', color: 'bg-purple-500/10 text-purple-400 border-purple-500/20' },
-      'c++': { icon: '++', label: 'C++', color: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20' },
-      'go': { icon: '🐹', label: 'Go', color: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20' },
-      'unity': { icon: '🎮', label: 'Unity', color: 'bg-zinc-500/10 text-zinc-300 border-zinc-500/20' },
-      'aws': { icon: '☁️', label: 'AWS', color: 'bg-orange-500/10 text-orange-400 border-orange-500/20' },
-      'kubernetes': { icon: '☸️', label: 'K8s', color: 'bg-blue-400/10 text-blue-300 border-blue-400/20' },
-      'docker': { icon: '🐳', label: 'Docker', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20' },
-      'sql': { icon: '🗄️', label: 'SQL', color: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' },
-      'python': { icon: '🐍', label: 'Python', color: 'bg-yellow-400/10 text-yellow-300 border-yellow-400/20' },
-      'java': { icon: '☕', label: 'Java', color: 'bg-red-500/10 text-red-400 border-red-500/20' },
-    };
-
-    for (const [key, value] of Object.entries(techMap)) {
-      // Special handling for C# and C++ (symbols) vs words
-      if (key === 'c#' || key === 'c++') {
-         // Check for exact match with surrounding spaces or punctuation if needed, 
-         // but simple includes is usually safe for these specific symbols 
-         // unless "C#" appears in "ABC#" (unlikely).
-         // Better: check for "c#" or "c++" surrounded by non-word chars or start/end
-         // But simple includes is probably fine for these unique tokens.
-         if (lowerDesc.includes(key)) stack.push(value);
-      } else {
-         // Use regex for whole word matching to avoid "go" matching "good", "aws" matching "paws"
-         try {
-             const regex = new RegExp(`\\b${key}\\b`, 'i');
-             if (regex.test(lowerDesc)) {
-                 stack.push(value);
-             }
-         } catch (e) {
-             // Fallback
-             if (lowerDesc.includes(key)) stack.push(value);
-         }
-      }
-    }
-    return stack.slice(0, 4);
-  };
-
   const isHot = differenceInMonths(new Date(), new Date(job.publishedAt)) > 6;
 
   return (
@@ -198,7 +141,7 @@ export default function JobDetails() {
             <div className="relative z-10 flex items-end justify-between">
                 <div className="flex gap-4">
                     {/* Tech Stack Preview (First 3) */}
-                    {isEngineeringRole(job.title, job.department) && getTechStack(job.descriptionHtml || '').slice(0, 3).map((tech, i) => (
+                    {isEngineeringRole(job.title, job.department) && getTechStack(job.title, job.descriptionHtml || '').slice(0, 3).map((tech, i) => (
                         <div key={i} className="flex items-center gap-3 px-6 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-200 text-xl font-medium">
                             <span>{tech.icon}</span> {tech.label}
                         </div>
@@ -235,9 +178,9 @@ export default function JobDetails() {
             </h1>
 
             {/* Tech Stack Badges */}
-            {isEngineeringRole(job.title, job.department) && getTechStack(job.descriptionHtml || '').length > 0 && (
+            {isEngineeringRole(job.title, job.department) && getTechStack(job.title, job.descriptionHtml || '').length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-6">
-                    {getTechStack(job.descriptionHtml || '').map((tech, i) => (
+                    {getTechStack(job.title, job.descriptionHtml || '').map((tech, i) => (
                         <span key={i} className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium border ${tech.color.replace('text-', 'border-').replace('bg-', 'bg-opacity-10 ')} bg-zinc-900/50`}>
                             <span>{tech.icon}</span> {tech.label}
                         </span>
