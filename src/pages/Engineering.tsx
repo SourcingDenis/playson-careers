@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import BlurText from '../components/BlurText';
+import ParticleNetwork from '../components/ParticleNetwork';
 import { MapPin, Clock, Building, Globe, ArrowRight, Zap, Server, Globe2, Activity, Users, Cpu, Search, Sparkles, ExternalLink, ChevronDown, ChevronUp, BarChart3, Shield, Headphones, Flame } from 'lucide-react';
 import { differenceInMonths } from 'date-fns';
 import { getTechStack, isEngineeringRole } from '../utils/jobUtils';
@@ -80,6 +81,8 @@ export default function Engineering() {
         
         {/* Animated Grid Background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] -z-10" />
+        
+        <ParticleNetwork />
 
         <div className="mx-auto max-w-7xl px-4 md:px-6 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">

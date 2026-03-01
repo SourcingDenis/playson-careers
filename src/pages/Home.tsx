@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import BlurText from '../components/BlurText';
 import LiquidEther from '../components/LiquidEther';
+import ParticleNetwork from '../components/ParticleNetwork';
 import { MapPin, Clock, Building, Globe, ArrowRight, Zap, Server, Globe2, Activity, Users, Cpu, MessageCircle, Gift, GraduationCap, Heart, PartyPopper, Calendar, Search, Sparkles, ExternalLink, ShieldCheck, Handshake, ChevronDown, ChevronUp, Flame } from 'lucide-react';
 import { differenceInMonths } from 'date-fns';
 import { isEngineeringRole } from '../utils/jobUtils';
@@ -81,6 +82,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-zinc-950">
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
             <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-playson-red/10 via-transparent to-transparent blur-[100px] opacity-30" />
+            <ParticleNetwork />
         </div>
 
         <div className="mx-auto max-w-7xl px-4 md:px-6 w-full relative z-10">
@@ -544,26 +546,6 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-6 md:gap-8 mb-8 md:mb-12">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <h3 className="text-xl md:text-2xl font-bold tracking-tight">Open Roles</h3>
-            
-            {/* Search Input */}
-            <div className="relative w-full md:w-96">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-zinc-500" />
-              </div>
-              <input
-                type="text"
-                placeholder="Search by role, keyword or location..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="block w-full pl-10 pr-3 py-2.5 border border-zinc-800 rounded-xl leading-5 bg-zinc-900/50 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:bg-zinc-900 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 sm:text-sm transition-all"
-              />
-            </div>
-          </div>
-        </div>
-
         {loading ? (
           <div className="grid gap-4">
             {[1, 2, 3, 4].map(i => (
@@ -577,12 +559,17 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900/50 p-1 group"
+              className="relative overflow-hidden rounded-3xl bg-zinc-900/50 p-[1px] group"
             >
-                <div className="absolute inset-0 bg-gradient-to-r from-playson-red/10 via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-500" />
+                {/* Lighting Border Animation */}
+                <div className="absolute inset-0 overflow-hidden rounded-3xl">
+                    <div className="absolute inset-0 h-full w-full animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_340deg,#ff002a_360deg)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </div>
+
+                <div className="absolute inset-0 bg-gradient-to-r from-playson-red/10 via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-500 rounded-3xl" />
                 
                 {/* Content Container */}
-                <div className="relative flex flex-col lg:flex-row items-center justify-between gap-8 rounded-[1.4rem] bg-zinc-950/80 p-6 md:p-12 backdrop-blur-xl transition-all duration-500 hover:bg-zinc-950/60">
+                <div className="relative flex flex-col lg:flex-row items-center justify-between gap-8 rounded-[1.4rem] bg-zinc-950/90 p-6 md:p-12 backdrop-blur-xl transition-all duration-500 hover:bg-zinc-950/80 h-full w-full">
                     
                     {/* Decorative Circuit/Grid Background */}
                     <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_0%_50%,#000_70%,transparent_100%)] opacity-50 pointer-events-none" />
@@ -629,6 +616,26 @@ export default function Home() {
                     </div>
                 </div>
             </motion.div>
+
+            <div className="flex flex-col gap-6 md:gap-8 mb-8 md:mb-12">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <h3 className="text-xl md:text-2xl font-bold tracking-tight">Open Roles</h3>
+                
+                {/* Search Input */}
+                <div className="relative w-full md:w-96">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Search className="h-5 w-5 text-zinc-500" />
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search by role, keyword or location..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="block w-full pl-10 pr-3 py-2.5 border border-zinc-800 rounded-xl leading-5 bg-zinc-900/50 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:bg-zinc-900 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 sm:text-sm transition-all"
+                  />
+                </div>
+              </div>
+            </div>
 
             {/* Other Roles - Categorized */}
             {filteredJobs.length > 0 ? (
