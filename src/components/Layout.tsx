@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 // Trigger rebuild
 import { Gamepad2 } from 'lucide-react';
 import { ReactNode, useEffect } from 'react';
+import Footer from './Footer';
 
 export default function Layout({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
@@ -28,11 +29,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <main>
         {children}
       </main>
-      <footer className="border-t border-zinc-900 py-12 mt-24">
-        <div className="mx-auto max-w-7xl px-6 text-center text-zinc-500 text-sm">
-          &copy; {new Date().getFullYear()} Playson. All rights reserved.
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
