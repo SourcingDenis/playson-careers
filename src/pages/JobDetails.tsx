@@ -8,6 +8,7 @@ import download from 'downloadjs';
 import { Job } from './Home';
 import SocialShareExplainer from '../components/SocialShareExplainer';
 import { getTechStack, isEngineeringRole } from '../utils/jobUtils';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function JobDetails() {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +17,7 @@ export default function JobDetails() {
   const [generatingCard, setGeneratingCard] = useState(false);
   const [copied, setCopied] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   const [similarJobs, setSimilarJobs] = useState<Job[]>([]);
 
@@ -96,10 +98,10 @@ export default function JobDetails() {
   if (!job) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-6">
-        <h2 className="text-2xl font-bold mb-4">Job not found</h2>
-        <p className="text-zinc-400 mb-8">The position you're looking for might have been filled or removed.</p>
+        <h2 className="text-2xl font-bold mb-4">{t('job.notFound')}</h2>
+        <p className="text-zinc-400 mb-8">{t('job.notFoundDesc')}</p>
         <Link to="/" className="text-playson-red hover:text-red-600 flex items-center gap-2">
-          <ArrowLeft className="w-4 h-4" /> Back to all jobs
+          <ArrowLeft className="w-4 h-4" /> {t('job.backToAll')}
         </Link>
       </div>
     );
@@ -123,7 +125,7 @@ export default function JobDetails() {
             <div className="relative z-10">
                 <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-zinc-800/50 text-zinc-300 text-xl font-medium mb-8 border border-zinc-700/50">
                     <span className="w-3 h-3 rounded-full bg-playson-red animate-blink" />
-                    We are hiring
+                    {t('job.weAreHiring')}
                 </div>
                 <h1 className="text-7xl font-bold text-white tracking-tight mb-6 leading-tight max-w-4xl">
                     {job.title}

@@ -7,6 +7,7 @@ import ParticleNetwork from '../components/ParticleNetwork';
 import { MapPin, Clock, Building, Globe, ArrowRight, Zap, Server, Globe2, Activity, Users, Cpu, MessageCircle, Gift, GraduationCap, Heart, PartyPopper, Calendar, Search, Sparkles, ExternalLink, ShieldCheck, Handshake, ChevronDown, ChevronUp, Flame } from 'lucide-react';
 import { differenceInMonths } from 'date-fns';
 import { isEngineeringRole } from '../utils/jobUtils';
+import { useLanguage } from '../context/LanguageContext';
 
 export interface Job {
   id: string;
@@ -24,6 +25,7 @@ export interface Job {
 
 export default function Home() {
   const navigate = useNavigate();
+  const { t, language } = useLanguage();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -113,27 +115,32 @@ export default function Home() {
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-playson-red opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-playson-red animate-blink"></span>
                     </span>
-                    We are hiring
+                    {t('hero.badge')}
                 </motion.a>
 
                 <div className="text-4xl md:text-6xl lg:text-8xl font-bold tracking-tighter mb-8 flex flex-col items-center">
                     <BlurText
-                        text="Shape the Future"
+                        key={`title1-${language}`}
+                        text={t('hero.title1')}
                         delay={200}
                         animateBy="words"
                         direction="top"
                         className="text-white"
                     />
                     <div className="flex items-center gap-4">
+                        {t('hero.title2') && (
+                            <BlurText
+                                key={`title2-${language}`}
+                                text={t('hero.title2')}
+                                delay={400}
+                                animateBy="words"
+                                direction="top"
+                                className="text-white"
+                            />
+                        )}
                         <BlurText
-                            text="of"
-                            delay={400}
-                            animateBy="words"
-                            direction="top"
-                            className="text-white"
-                        />
-                        <BlurText
-                            text="iGaming"
+                            key={`title3-${language}`}
+                            text={t('hero.title3')}
                             delay={500}
                             animateBy="words"
                             direction="top"
@@ -149,8 +156,7 @@ export default function Home() {
                     }}
                     className="text-lg md:text-xl text-zinc-400 max-w-2xl mb-12 leading-relaxed px-4"
                 >
-                    Join a world-class team building the next generation of entertainment. 
-                    We combine creativity, technology, and data to create unforgettable experiences.
+                    {t('hero.subtitle')}
                 </motion.p>
 
                 <motion.div
@@ -163,7 +169,7 @@ export default function Home() {
                     <a href="#openings" className="group relative w-full sm:w-auto px-10 py-5 bg-playson-red rounded-full font-bold text-white text-lg shadow-[0_0_40px_-10px_rgba(255,0,42,0.5)] hover:shadow-[0_0_60px_-15px_rgba(255,0,42,0.6)] transition-all hover:scale-105 active:scale-95 overflow-hidden flex justify-center items-center">
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                         <span className="relative flex items-center gap-2">
-                            View Open Roles <ArrowRight className="w-5 h-5" />
+                            {t('hero.cta')} <ArrowRight className="w-5 h-5" />
                         </span>
                     </a>
 
@@ -211,13 +217,13 @@ export default function Home() {
       {/* Locations */}
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center">Choose where to work</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center">{t('locations.title')}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {[
-              { city: 'Bratislava', country: 'Slovakia', flag: 'https://cdn.prod.website-files.com/677bda6af407d3b963833347/68f0217c26a582ed80fd66bf_Frame%2021.svg' },
-              { city: 'Sliema', country: 'Malta', flag: 'https://cdn.prod.website-files.com/677bda6af407d3b963833347/68f02198bbeda1c626ba99f7_Frame%2022.svg' },
-              { city: 'Kyiv', country: 'Ukraine', flag: 'https://cdn.prod.website-files.com/677bda6af407d3b963833347/68f021a3922b818a6d55fe7d_Frame%2020.svg' },
-              { city: 'Fully', country: 'Remote', icon: Globe }
+              { city: t('locations.bratislava'), country: t('locations.slovakia'), flag: 'https://cdn.prod.website-files.com/677bda6af407d3b963833347/68f0217c26a582ed80fd66bf_Frame%2021.svg' },
+              { city: t('locations.sliema'), country: t('locations.malta'), flag: 'https://cdn.prod.website-files.com/677bda6af407d3b963833347/68f02198bbeda1c626ba99f7_Frame%2022.svg' },
+              { city: t('locations.kyiv'), country: t('locations.ukraine'), flag: 'https://cdn.prod.website-files.com/677bda6af407d3b963833347/68f021a3922b818a6d55fe7d_Frame%2020.svg' },
+              { city: t('locations.fully'), country: t('locations.remote'), icon: Globe }
             ].map((loc, i) => (
               <motion.div
                 key={i}
@@ -275,23 +281,23 @@ export default function Home() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 text-orange-400 text-sm font-medium mb-4"
             >
               <Sparkles className="w-4 h-4" />
-              <span>Perks & Culture</span>
+              <span>{t('benefits.perks')}</span>
             </motion.div>
             <h2 className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-orange-100 to-orange-200">
-              Enjoy the benefits
+              {t('benefits.enjoy')}
             </h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {[
-              { title: 'Remote & hybrid work', icon: Globe, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-              { title: 'Flexibility in your schedule', icon: Calendar, color: 'text-orange-400', bg: 'bg-orange-500/10' },
-              { title: 'Development courses', icon: GraduationCap, color: 'text-purple-400', bg: 'bg-purple-500/10' },
-              { title: 'Bonus system', icon: Gift, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-              { title: 'Full medical insurance', icon: Heart, color: 'text-red-400', bg: 'bg-red-500/10' },
-              { title: 'Corporate gatherings', icon: PartyPopper, color: 'text-yellow-400', bg: 'bg-yellow-500/10' },
-              { title: 'Strong engineering focus', icon: Cpu, color: 'text-indigo-400', bg: 'bg-indigo-500/10' },
-              { title: 'Flat structure & idea sharing', icon: MessageCircle, color: 'text-pink-400', bg: 'bg-pink-500/10' },
+              { title: t('benefits.item.remote'), icon: Globe, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+              { title: t('benefits.item.flex'), icon: Calendar, color: 'text-orange-400', bg: 'bg-orange-500/10' },
+              { title: t('benefits.item.courses'), icon: GraduationCap, color: 'text-purple-400', bg: 'bg-purple-500/10' },
+              { title: t('benefits.item.bonus'), icon: Gift, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+              { title: t('benefits.item.medical'), icon: Heart, color: 'text-red-400', bg: 'bg-red-500/10' },
+              { title: t('benefits.item.gatherings'), icon: PartyPopper, color: 'text-yellow-400', bg: 'bg-yellow-500/10' },
+              { title: t('benefits.item.engineering'), icon: Cpu, color: 'text-indigo-400', bg: 'bg-indigo-500/10' },
+              { title: t('benefits.item.flat'), icon: MessageCircle, color: 'text-pink-400', bg: 'bg-pink-500/10' },
             ].map((benefit, i) => (
               <motion.div
                 key={i}
@@ -332,14 +338,14 @@ export default function Home() {
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-800/50 text-zinc-300 text-sm font-medium mb-4 border border-zinc-700/50"
               >
                 <Heart className="w-4 h-4 text-playson-red" />
-                <span>Our Culture</span>
+                <span>{t('culture.badge')}</span>
               </motion.div>
               <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
-                Life at <span className="text-playson-red">Playson</span>
+                {t('culture.title1')}<span className="text-playson-red">{t('culture.title2')}</span>
               </h2>
             </div>
             <p className="text-zinc-400 max-w-md text-lg leading-relaxed mx-auto">
-              More than just code and games. We are a community of creators, thinkers, and friends.
+              {t('culture.subtitle')}
             </p>
           </div>
 
@@ -391,10 +397,10 @@ export default function Home() {
               </div>
               
               <div className="absolute bottom-0 left-0 p-8 z-10 bg-gradient-to-t from-zinc-950 via-zinc-950/80 to-transparent w-full">
-                <span className="inline-block px-3 py-1 bg-white text-black text-xs font-bold rounded-full mb-3 tracking-wider">GLOBAL HUBS</span>
-                <h3 className="text-3xl font-bold text-white mb-2">Global Impact</h3>
+                <span className="inline-block px-3 py-1 bg-white text-black text-xs font-bold rounded-full mb-3 tracking-wider">{t('culture.hubs')}</span>
+                <h3 className="text-3xl font-bold text-white mb-2">{t('culture.impact')}</h3>
                 <p className="text-zinc-300 text-base max-w-md">
-                  From our hubs in <span className="text-white font-medium">Malta, Ukraine, Slovakia, and the UK</span>, we're building technology that powers entertainment worldwide.
+                  {t('culture.impactDesc')}
                 </p>
               </div>
             </motion.div>
@@ -431,7 +437,7 @@ export default function Home() {
                 />
               </div>
               <div className="absolute bottom-6 left-6">
-                 <h3 className="text-lg font-bold text-white group-hover:text-playson-red transition-colors">Engineering First</h3>
+                 <h3 className="text-lg font-bold text-white group-hover:text-playson-red transition-colors">{t('culture.engineering')}</h3>
               </div>
             </motion.div>
 
@@ -449,11 +455,11 @@ export default function Home() {
               <div className="relative z-10">
                 <Users className="w-8 h-8 text-white mb-4" />
                 <div className="text-6xl font-bold text-white mb-1 tracking-tighter">350+</div>
-                <div className="text-white/90 font-medium text-lg">Playsoners Worldwide</div>
+                <div className="text-white/90 font-medium text-lg">{t('culture.playsoners')}</div>
               </div>
               <div className="relative z-10 mt-4 pt-4 border-t border-white/20">
                 <div className="flex items-center gap-2 text-white font-bold group-hover:translate-x-1 transition-transform">
-                  Join the family <ArrowRight className="w-4 h-4" />
+                  {t('culture.joinFamily')} <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
             </motion.div>
@@ -478,8 +484,8 @@ export default function Home() {
                   ))}
                </div>
                <div className="absolute bottom-6 left-6 right-6 bg-zinc-950/80 backdrop-blur-sm p-3 rounded-xl border border-zinc-800/50">
-                  <h3 className="text-lg font-bold text-white mb-1">High Energy</h3>
-                  <p className="text-zinc-400 text-xs">We work hard and celebrate harder.</p>
+                  <h3 className="text-lg font-bold text-white mb-1">{t('culture.energy')}</h3>
+                  <p className="text-zinc-400 text-xs">{t('culture.energyDesc')}</p>
                </div>
             </motion.div>
 
@@ -530,8 +536,8 @@ export default function Home() {
               </div>
               
               <div className="absolute bottom-6 left-6 bg-zinc-950/80 backdrop-blur-sm px-6 py-4 rounded-2xl border border-zinc-800/50">
-                 <h3 className="text-xl font-bold text-white mb-1">Connected Culture</h3>
-                 <p className="text-zinc-300 text-sm">A flat structure where every voice matters and ideas flow freely.</p>
+                 <h3 className="text-xl font-bold text-white mb-1">{t('hero.connected')}</h3>
+                 <p className="text-zinc-300 text-sm">{t('hero.connectedDesc')}</p>
               </div>
             </motion.div>
 
@@ -577,15 +583,15 @@ export default function Home() {
                     <div className="relative z-10 flex-1 text-center lg:text-left">
                         <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-playson-red/30 bg-playson-red/10 px-3 py-1 text-sm font-medium text-playson-red">
                             <Cpu className="h-4 w-4 animate-pulse" />
-                            <span>Engineering Hub</span>
+                            <span>{t('home.engHub.badge')}</span>
                         </div>
                         
                         <h3 className="mb-3 text-2xl md:text-3xl lg:text-4xl font-bold text-white">
-                            Building the <span className="text-transparent bg-clip-text bg-gradient-to-r from-playson-red to-red-500">Next Gen</span> Platform?
+                            {t('home.engHub.title1')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-playson-red to-red-500">{t('home.engHub.title2')}</span> {t('home.engHub.title3')}
                         </h3>
                         
                         <p className="max-w-xl text-base md:text-lg text-zinc-400 mx-auto lg:mx-0">
-                            Join our specialized Engineering & Product teams. We have a dedicated portal for technical roles, architecture deep-dives, and our tech stack.
+                            {t('home.engHub.desc')}
                         </p>
                         
                         {engineeringJobsCount > 0 && (
@@ -597,7 +603,7 @@ export default function Home() {
                                         </div>
                                     ))}
                                 </div>
-                                <span><span className="text-playson-red font-bold">{engineeringJobsCount} open positions</span> waiting for you</span>
+                                <span><span className="text-playson-red font-bold">{engineeringJobsCount} {t('home.engHub.open')}</span> {t('home.engHub.waiting')}</span>
                             </div>
                         )}
                     </div>
@@ -607,7 +613,7 @@ export default function Home() {
                             to="/engineering" 
                             className="group/btn relative flex items-center justify-center gap-3 overflow-hidden rounded-full bg-playson-red px-8 py-4 text-lg font-bold text-white shadow-[0_0_40px_-10px_rgba(255,0,42,0.4)] transition-all hover:scale-105 hover:shadow-[0_0_60px_-10px_rgba(255,0,42,0.6)] active:scale-95 w-full sm:w-auto"
                         >
-                            <span className="relative z-10">Visit Engineering Hub</span>
+                            <span className="relative z-10">{t('home.engHub.cta')}</span>
                             <ArrowRight className="relative z-10 h-5 w-5 transition-transform group-hover/btn:translate-x-1" />
                             
                             {/* Shine Effect */}
@@ -619,7 +625,7 @@ export default function Home() {
 
             <div className="flex flex-col gap-6 md:gap-8 mb-8 md:mb-12">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <h3 className="text-xl md:text-2xl font-bold tracking-tight">Open Roles</h3>
+                <h3 className="text-xl md:text-2xl font-bold tracking-tight">{t('home.roles.title')}</h3>
                 
                 {/* Search Input */}
                 <div className="relative w-full md:w-96">
@@ -628,7 +634,7 @@ export default function Home() {
                   </div>
                   <input
                     type="text"
-                    placeholder="Search by role, keyword or location..."
+                    placeholder={t('home.roles.search')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="block w-full pl-10 pr-3 py-2.5 border border-zinc-800 rounded-xl leading-5 bg-zinc-900/50 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:bg-zinc-900 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 sm:text-sm transition-all"
@@ -678,7 +684,7 @@ export default function Home() {
                                                 {job.title}
                                                 {differenceInMonths(new Date(), new Date(job.publishedAt)) > 6 && (
                                                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-500 text-xs font-bold border border-blue-500/30 animate-pulse">
-                                                    <Flame className="w-3 h-3 fill-blue-500" /> Hot
+                                                    <Flame className="w-3 h-3 fill-blue-500" /> {t('job.hot')}
                                                   </span>
                                                 )}
                                             </h3>
@@ -743,11 +749,11 @@ export default function Home() {
 
         <div className="mt-12 p-6 md:p-8 rounded-3xl bg-zinc-900/30 border border-zinc-800 flex flex-col items-center justify-between gap-6 md:gap-8 text-center">
           <div>
-            <h3 className="text-lg md:text-xl font-bold mb-2">Don’t see your role listed?</h3>
-            <p className="text-zinc-400">Submit your information and we’ll reach out soon.</p>
+            <h3 className="text-lg md:text-xl font-bold mb-2">{t('job.cantFind')}</h3>
+            <p className="text-zinc-400">{t('job.cantFindDesc')}</p>
           </div>
           <a href="https://jobs.ashbyhq.com/playson/form/general-interest" target="_blank" rel="noreferrer" className="w-full md:w-auto bg-white text-black hover:bg-zinc-200 px-8 py-3 rounded-full font-medium transition-colors inline-block">
-            Submit
+            {t('job.sendCv')}
           </a>
         </div>
       </section>
@@ -761,9 +767,9 @@ export default function Home() {
                     <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full bg-playson-red/10 mb-6">
                         <Handshake className="w-6 h-6 md:w-8 md:h-8 text-playson-red" />
                     </div>
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">Partnering with like-minded people</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">{t('partners.title')}</h2>
                     <p className="text-lg md:text-xl text-zinc-400 max-w-3xl mx-auto mb-8 md:mb-12">
-                        With more than 10 years of industry experience, we collaborate with iGaming Leaders for joint development, sharing entertainment and fun with everyone.
+                        {t('partners.desc')}
                     </p>
                     <div className="flex flex-wrap justify-center gap-8 md:gap-12 items-center opacity-90">
                         <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tighter hover:text-playson-red transition-colors cursor-default">ICE <span className="font-light">LONDON</span></h3>
@@ -780,9 +786,9 @@ export default function Home() {
       <section className="py-16 md:py-20 bg-zinc-900/30 border-y border-zinc-800/50">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Licensed & Certified</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('licensed.title')}</h2>
             <p className="text-zinc-400 max-w-2xl mx-auto">
-              We operate in regulated markets worldwide, holding licenses and certifications from the industry's most respected authorities.
+              {t('licensed.desc')}
             </p>
           </div>
 
