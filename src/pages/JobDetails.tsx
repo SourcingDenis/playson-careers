@@ -122,7 +122,7 @@ export default function JobDetails() {
             
             <div className="relative z-10">
                 <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-zinc-800/50 text-zinc-300 text-xl font-medium mb-8 border border-zinc-700/50">
-                    <span className="w-3 h-3 rounded-full bg-playson-red animate-pulse" />
+                    <span className="w-3 h-3 rounded-full bg-playson-red animate-blink" />
                     We are hiring
                 </div>
                 <h1 className="text-7xl font-bold text-white tracking-tight mb-6 leading-tight max-w-4xl">

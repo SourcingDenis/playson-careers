@@ -111,7 +111,7 @@ export default function Home() {
                 >
                     <span className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-playson-red opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-playson-red"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-playson-red animate-blink"></span>
                     </span>
                     We are hiring
                 </motion.a>

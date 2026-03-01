@@ -125,10 +125,13 @@ const Fluid = ({
     [color0, color1, color2, mouseForce, cursorSize, viscous, size]
   );
 
-  useFrame((state) => {
+  const time = useRef(0);
+
+  useFrame((state, delta) => {
     if (mesh.current) {
+      time.current += delta;
       const material = mesh.current.material as THREE.ShaderMaterial;
-      material.uniforms.uTime.value = state.clock.getElapsedTime();
+      material.uniforms.uTime.value = time.current;
       
       // Update mouse position (normalized 0-1)
       const mouse = state.pointer; // -1 to 1

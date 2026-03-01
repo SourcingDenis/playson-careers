@@ -5,6 +5,12 @@
   --color-playson-red: #FF002A;
   --animate-shimmer: shimmer 2s linear infinite;
   --animate-gradient-x: gradient-x 15s ease infinite;
+  --animate-blink: blink 1.5s ease-in-out infinite;
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
 
   @keyframes shimmer {
     from {
