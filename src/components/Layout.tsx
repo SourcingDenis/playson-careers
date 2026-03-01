@@ -1,13 +1,12 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 // Trigger rebuild
-import { Gamepad2, ArrowUp, Briefcase } from 'lucide-react';
+import { Gamepad2, ArrowUp, ArrowLeft, Briefcase } from 'lucide-react';
 import { ReactNode, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import Footer from './Footer';
 
 export default function Layout({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
   const [showFloatingButton, setShowFloatingButton] = useState(false);
   const [showEngineeringLink, setShowEngineeringLink] = useState(false);
 
@@ -40,16 +39,8 @@ export default function Layout({ children }: { children: ReactNode }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToOpportunities = () => {
-    if (pathname !== '/') {
-      navigate('/#openings');
-      return;
-    }
-    
-    const element = document.getElementById('openings');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -63,7 +54,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <span className="font-bold text-xl tracking-tight text-white group-hover:text-zinc-200 transition-colors">Playson <span className="text-zinc-500 font-medium">Careers</span></span>
           </Link>
 
-          {/* Engineering Hub Link - Visible after scroll */}
+          {/* Contextual Header Nav - Visible after scroll */}
           <AnimatePresence>
             {showEngineeringLink && (
               <motion.div
@@ -72,21 +63,28 @@ export default function Layout({ children }: { children: ReactNode }) {
                 exit={{ opacity: 0, x: 20, scale: 0.9 }}
                 className="hidden md:block"
               >
-                <Link to="/engineering" className="group relative inline-flex items-center justify-center p-[1px] overflow-hidden rounded-full transition-all hover:scale-105 active:scale-95">
-                  {/* Lightning Border Animation */}
-                  <span className="absolute inset-0 h-full w-full animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#09090b_0%,#ef4444_50%,#09090b_100%)] opacity-70 group-hover:opacity-100 transition-opacity" />
-                  
-                  {/* Content Container */}
-                  <span className="relative inline-flex h-full w-full items-center justify-center rounded-full bg-zinc-950 px-4 py-2 text-sm font-medium text-white backdrop-blur-3xl transition-all duration-300 group-hover:bg-zinc-900 group-hover:px-6 border border-zinc-800/50">
-                    <Briefcase className="w-4 h-4 mr-2 text-playson-red group-hover:animate-pulse" />
-                    <span className="whitespace-nowrap">
-                      Engineering Hub
+                {pathname === '/engineering' ? (
+                  <Link to="/" className="group relative inline-flex items-center justify-center p-[1px] overflow-hidden rounded-full transition-all hover:scale-105 active:scale-95">
+                    <span className="absolute inset-0 h-full w-full animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#09090b_0%,#ef4444_50%,#09090b_100%)] opacity-70 group-hover:opacity-100 transition-opacity" />
+                    <span className="relative inline-flex h-full w-full items-center justify-center rounded-full bg-zinc-950 px-4 py-2 text-sm font-medium text-white backdrop-blur-3xl transition-all duration-300 group-hover:bg-zinc-900 group-hover:px-6 border border-zinc-800/50">
+                      <ArrowLeft className="w-4 h-4 mr-2 text-playson-red" />
+                      <span className="whitespace-nowrap">Back to Home</span>
                     </span>
-                    <span className="ml-2 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-xs transition-all duration-300 ease-in-out">
-                      <ArrowUp className="w-3 h-3 rotate-45" />
+                  </Link>
+                ) : (
+                  <Link to="/engineering" className="group relative inline-flex items-center justify-center p-[1px] overflow-hidden rounded-full transition-all hover:scale-105 active:scale-95">
+                    {/* Lightning Border Animation */}
+                    <span className="absolute inset-0 h-full w-full animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#09090b_0%,#ef4444_50%,#09090b_100%)] opacity-70 group-hover:opacity-100 transition-opacity" />
+                    {/* Content Container */}
+                    <span className="relative inline-flex h-full w-full items-center justify-center rounded-full bg-zinc-950 px-4 py-2 text-sm font-medium text-white backdrop-blur-3xl transition-all duration-300 group-hover:bg-zinc-900 group-hover:px-6 border border-zinc-800/50">
+                      <Briefcase className="w-4 h-4 mr-2 text-playson-red group-hover:animate-pulse" />
+                      <span className="whitespace-nowrap">Engineering Hub</span>
+                      <span className="ml-2 opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-xs transition-all duration-300 ease-in-out">
+                        <ArrowUp className="w-3 h-3 rotate-45" />
+                      </span>
                     </span>
-                  </span>
-                </Link>
+                  </Link>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
@@ -111,7 +109,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             exit={{ opacity: 0, y: 20, scale: 0.8 }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={scrollToOpportunities}
+            onClick={scrollToTop}
             className="fixed bottom-8 right-8 z-40 flex items-center justify-center w-14 h-14 bg-playson-red text-white rounded-full shadow-[0_10px_40px_-10px_rgba(255,0,42,0.5)] border border-white/10 backdrop-blur-md group"
           >
             <motion.div
