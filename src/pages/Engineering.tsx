@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+// Trigger rebuild
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import BlurText from '../components/BlurText';
@@ -7,7 +8,6 @@ import ScrambleText from '../components/ScrambleText';
 import { MapPin, Clock, Building, Globe, ArrowRight, Zap, Server, Globe2, Activity, Users, Cpu, Search, Sparkles, ExternalLink, ChevronDown, ChevronUp, BarChart3, Shield, Headphones, Flame } from 'lucide-react';
 import { differenceInMonths } from 'date-fns';
 import { getTechStack, isEngineeringRole } from '../utils/jobUtils';
-import { useLanguage } from '../context/LanguageContext';
 
 export interface Job {
   id: string;
@@ -28,7 +28,6 @@ export default function Engineering() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
-  const { t, language } = useLanguage();
 
   useEffect(() => {
     fetch('https://api.ashbyhq.com/posting-api/job-board/playson')
@@ -100,21 +99,19 @@ export default function Engineering() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-playson-red opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-playson-red animate-blink"></span>
                 </span>
-                {t('eng.badge')}
+                Hiring Engineers & Product Leaders
               </div>
               
               <div className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tighter mb-6 leading-[1.1]">
                 <BlurText
-                  key={`title1-${language}`}
-                  text={t('eng.title1')}
+                  text="xPlatform."
                   delay={200}
                   animateBy="words"
                   direction="top"
                   className="block mb-2"
                 />
                 <BlurText
-                  key={`title2-${language}`}
-                  text={t('eng.title2')}
+                  text="Built for Scale."
                   delay={400}
                   animateBy="words"
                   direction="top"
@@ -123,15 +120,15 @@ export default function Engineering() {
               </div>
               
               <p className="text-lg md:text-xl text-zinc-400 mb-10 leading-relaxed max-w-lg">
-                {t('eng.desc')}
+                Join the team building a highly adaptable solution that provides superior gaming and business experience through flexible API, powerful BI tools, and streamlined integration.
               </p>
               
               <div className="flex flex-col sm:flex-row flex-wrap gap-4">
                 <a href="#openings" className="bg-playson-red hover:bg-red-600 text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-lg shadow-playson-red/25 flex items-center justify-center gap-2">
-                  {t('eng.viewRoles')} <ArrowRight className="w-5 h-5" />
+                  View Open Roles <ArrowRight className="w-5 h-5" />
                 </a>
                 <a href="https://playson.com/x-platform" target="_blank" rel="noreferrer" className="bg-zinc-900 hover:bg-zinc-800 text-zinc-200 px-8 py-4 rounded-full font-medium transition-all border border-zinc-800 hover:border-zinc-700 flex items-center justify-center gap-2">
-                  {t('eng.aboutX')} <ExternalLink className="w-4 h-4" />
+                  About xPlatform <ExternalLink className="w-4 h-4" />
                 </a>
               </div>
             </motion.div>
@@ -259,9 +256,9 @@ export default function Engineering() {
       <section className="py-20 md:py-32 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 md:px-6 mb-16 md:mb-24 text-center">
           <h2 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
-            <ScrambleText text={t('eng.techStack')} />
+            <ScrambleText text="Our tech stack:" />
           </h2>
-          <p className="text-zinc-400 max-w-3xl mx-auto text-xl md:text-2xl leading-relaxed">{t('eng.techDesc')}</p>
+          <p className="text-zinc-400 max-w-3xl mx-auto text-xl md:text-2xl leading-relaxed">Built with modern technologies for performance and scale.</p>
         </div>
         
         <div className="relative w-full overflow-visible">
@@ -329,7 +326,7 @@ export default function Engineering() {
 
         <div className="flex flex-col gap-6 md:gap-8 mb-8 md:mb-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <h3 className="text-xl md:text-2xl font-bold tracking-tight">{t('eng.openRoles')}</h3>
+            <h3 className="text-xl md:text-2xl font-bold tracking-tight">Open Technical Roles</h3>
             
             {/* Search Input */}
             <div className="relative w-full md:w-96">
@@ -338,7 +335,7 @@ export default function Engineering() {
               </div>
               <input
                 type="text"
-                placeholder={t('eng.search')}
+                placeholder="Search by role, keyword or location..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="block w-full pl-10 pr-3 py-2.5 border border-zinc-800 rounded-xl leading-5 bg-zinc-900/50 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:bg-zinc-900 focus:border-playson-red focus:ring-1 focus:ring-playson-red sm:text-sm transition-all"
@@ -393,7 +390,7 @@ export default function Engineering() {
                                             {job.title}
                                             {differenceInMonths(new Date(), new Date(job.publishedAt)) > 6 && (
                                               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-playson-red/20 text-playson-red text-xs font-bold border border-playson-red/30 animate-pulse">
-                                                <Flame className="w-3 h-3 fill-playson-red" /> {t('job.hot')}
+                                                <Flame className="w-3 h-3 fill-playson-red" /> Hot
                                               </span>
                                             )}
                                         </h3>
@@ -421,7 +418,7 @@ export default function Engineering() {
                                             {job.isRemote && (
                                             <div className="flex items-center gap-1.5 text-emerald-400">
                                                 <Globe className="w-4 h-4" />
-                                                {t('job.remote')}
+                                                Remote
                                             </div>
                                             )}
                                         </div>
@@ -444,9 +441,9 @@ export default function Engineering() {
                                 className="mt-4 flex items-center gap-2 text-zinc-400 hover:text-playson-red transition-colors text-sm font-medium"
                             >
                                 {isExpanded ? (
-                                    <>{t('job.showLess')} <ChevronUp className="w-4 h-4" /></>
+                                    <>Show Less <ChevronUp className="w-4 h-4" /></>
                                 ) : (
-                                    <>{t('job.showMore').replace('{count}', (deptJobs.length - 5).toString())} <ChevronDown className="w-4 h-4" /></>
+                                    <>Show {deptJobs.length - 5} More <ChevronDown className="w-4 h-4" /></>
                                 )}
                             </button>
                         )}
@@ -456,12 +453,12 @@ export default function Engineering() {
 
             {filteredJobs.length === 0 && (
               <div className="text-center py-16 md:py-24 text-zinc-500 bg-zinc-900/30 rounded-3xl border border-zinc-800 border-dashed">
-                <p className="text-lg">{t('eng.noRoles')}</p>
+                <p className="text-lg">No open engineering positions found matching your criteria.</p>
                 <button 
                   onClick={() => {setSearchQuery('');}}
                   className="mt-4 text-playson-red hover:text-red-600 font-medium"
                 >
-                  {t('job.clearFilters')}
+                  Clear filters
                 </button>
               </div>
             )}
@@ -470,11 +467,11 @@ export default function Engineering() {
 
         <div className="mt-12 p-6 md:p-8 rounded-3xl bg-zinc-900/30 border border-zinc-800 flex flex-col items-center justify-between gap-6 md:gap-8 text-center">
           <div>
-            <h3 className="text-lg md:text-xl font-bold mb-2">{t('job.cantFind')}</h3>
-            <p className="text-zinc-400">{t('job.cantFindDesc')}</p>
+            <h3 className="text-lg md:text-xl font-bold mb-2">Don’t see your role listed?</h3>
+            <p className="text-zinc-400">Submit your information and we’ll reach out soon.</p>
           </div>
           <a href="https://jobs.ashbyhq.com/playson/form/general-interest" target="_blank" rel="noreferrer" className="w-full md:w-auto bg-white text-black hover:bg-zinc-200 px-8 py-3 rounded-full font-medium transition-colors inline-block">
-            {t('job.sendCv')}
+            Submit
           </a>
         </div>
       </section>
