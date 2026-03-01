@@ -286,9 +286,6 @@ export default function JobDetails() {
                 </div>
               </div>
             </div>
-
-            {/* Social Share Explainer Component */}
-            <SocialShareExplainer onDownload={handleShare} isGenerating={generatingCard} />
           </div>
         </div>
       </div>

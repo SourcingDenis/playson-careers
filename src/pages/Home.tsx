@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import BlurText from '../components/BlurText';
 import LiquidEther from '../components/LiquidEther';
 import ParticleNetwork from '../components/ParticleNetwork';
+import GeneralInterestCTA from '../components/GeneralInterestCTA';
 import { MapPin, Clock, Building, Globe, ArrowRight, Zap, Server, Globe2, Activity, Users, Cpu, MessageCircle, Gift, GraduationCap, Heart, PartyPopper, Calendar, Search, Sparkles, ExternalLink, ShieldCheck, Handshake, ChevronDown, ChevronUp, Flame } from 'lucide-react';
 import { differenceInMonths } from 'date-fns';
 import { isEngineeringRole } from '../utils/jobUtils';
@@ -162,7 +163,23 @@ export default function Home() {
                             delay={500}
                             animateBy="words"
                             direction="top"
-                            className="text-playson-red"
+                            className="text-white"
+                        />
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <BlurText
+                            text="at"
+                            delay={600}
+                            animateBy="words"
+                            direction="top"
+                            className="text-white"
+                        />
+                        <BlurText
+                            text="Playson"
+                            delay={700}
+                            animateBy="words"
+                            direction="top"
+                            className="text-white"
                         />
                     </div>
                 </div>
@@ -763,18 +780,11 @@ export default function Home() {
                 </button>
               </div>
             )}
+
           </div>
         )}
 
-        <div className="mt-12 p-6 md:p-8 rounded-3xl bg-zinc-900/30 border border-zinc-800 flex flex-col items-center justify-between gap-6 md:gap-8 text-center">
-          <div>
-            <h3 className="text-lg md:text-xl font-bold mb-2">Don’t see your role listed?</h3>
-            <p className="text-zinc-400">Submit your information and we’ll reach out soon.</p>
-          </div>
-          <a href="https://jobs.ashbyhq.com/playson/form/general-interest" target="_blank" rel="noreferrer" className="w-full md:w-auto bg-white text-black hover:bg-zinc-200 px-8 py-3 rounded-full font-medium transition-colors inline-block">
-            Submit
-          </a>
-        </div>
+        <GeneralInterestCTA />
       </section>
 
       {/* Partners Section (Simplified) */}
@@ -791,10 +801,10 @@ export default function Home() {
                         With more than 10 years of industry experience, we collaborate with iGaming Leaders for joint development, sharing entertainment and fun with everyone.
                     </p>
                     <div className="flex flex-wrap justify-center gap-8 md:gap-12 items-center opacity-90">
-                        <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tighter hover:text-playson-red transition-colors cursor-default">ICE <span className="font-light">LONDON</span></h3>
-                        <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight hover:text-playson-red transition-colors cursor-default">SBC <span className="text-playson-red">SUMMIT</span></h3>
-                        <h3 className="text-2xl md:text-3xl font-extrabold text-white italic hover:text-playson-red transition-colors cursor-default">iGB <span className="font-normal">Live!</span></h3>
-                        <h3 className="text-2xl md:text-3xl font-bold text-white hover:text-playson-red transition-colors cursor-default">SiGMA <span className="text-sm align-top">EUROPE</span></h3>
+                        <a href="https://www.icegaming.world/" target="_blank" rel="noreferrer" className="text-2xl md:text-3xl font-bold text-white tracking-tighter hover:text-playson-red transition-colors cursor-pointer">ICE <span className="font-light">LONDON</span></a>
+                        <a href="https://sbcevents.com/" target="_blank" rel="noreferrer" className="text-2xl md:text-3xl font-bold text-white tracking-tight hover:text-playson-red transition-colors cursor-pointer">SBC <span className="text-playson-red">SUMMIT</span></a>
+                        <a href="https://www.igblive.com/" target="_blank" rel="noreferrer" className="text-2xl md:text-3xl font-extrabold text-white italic hover:text-playson-red transition-colors cursor-pointer">iGB <span className="font-normal">Live!</span></a>
+                        <a href="https://sigma.world/europe/" target="_blank" rel="noreferrer" className="text-2xl md:text-3xl font-bold text-white hover:text-playson-red transition-colors cursor-pointer">SiGMA <span className="text-sm align-top">EUROPE</span></a>
                     </div>
                 </div>
             </div>
@@ -811,27 +821,27 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 items-center justify-items-center opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
              {/* Licenses */}
-             <img src="https://playson.com/fmc/120-68/af9e/232c/8212/l-logo-1.png" alt="UKGC" className="h-10 md:h-12 object-contain" />
-             <img src="https://playson.com/fmc/64-68/f099/cd97/cc48/l-logo-2.png" alt="ONJN" className="h-10 md:h-12 object-contain" />
-             <img src="https://playson.com/fmc/177-125/b500/9b7c/dcbd/spelinspektionen_logotyp_transparent.png" alt="Spelinspektionen" className="h-10 md:h-12 object-contain" />
-             <img src="https://playson.com/fmc/122-68/8fa6/b7ba/891c/l-logo-5.png" alt="HGC" className="h-10 md:h-12 object-contain" />
-             <img src="https://playson.com/fmc/78-68/d689/d2c3/01b6/l-logo-6.png" alt="AGCO" className="h-10 md:h-12 object-contain" />
-             <img src="https://playson.com/fmc/488-250/1a86/8c66/6138/GRA-logo-transparent.png" alt="Gibraltar" className="h-10 md:h-12 object-contain" />
-             <img src="https://playson.com/fm/logotypes/Mincetur.png" alt="Mincetur" className="h-10 md:h-12 object-contain" />
-             <img src="https://playson.com/fm/logotypes/Brazil-secretaria-logo.png" alt="Brazil" className="h-10 md:h-12 object-contain" />
+             <img src="https://playson.com/fmc/120-68/af9e/232c/8212/l-logo-1.png" alt="UKGC" className="h-16 md:h-20 object-contain" />
+             <img src="https://playson.com/fmc/64-68/f099/cd97/cc48/l-logo-2.png" alt="ONJN" className="h-16 md:h-20 object-contain" />
+             <img src="https://playson.com/fmc/177-125/b500/9b7c/dcbd/spelinspektionen_logotyp_transparent.png" alt="Spelinspektionen" className="h-16 md:h-20 object-contain" />
+             <img src="https://playson.com/fmc/122-68/8fa6/b7ba/891c/l-logo-5.png" alt="HGC" className="h-16 md:h-20 object-contain" />
+             <img src="https://playson.com/fmc/78-68/d689/d2c3/01b6/l-logo-6.png" alt="AGCO" className="h-16 md:h-20 object-contain" />
+             <img src="https://playson.com/fmc/488-250/1a86/8c66/6138/GRA-logo-transparent.png" alt="Gibraltar" className="h-16 md:h-20 object-contain" />
+             <img src="https://playson.com/fm/logotypes/Mincetur.png" alt="Mincetur" className="h-16 md:h-20 object-contain" />
+             <img src="https://playson.com/fm/logotypes/Brazil-secretaria-logo.png" alt="Brazil" className="h-16 md:h-20 object-contain" />
           </div>
 
           <div className="mt-12 md:mt-16 pt-12 md:pt-16 border-t border-zinc-800/50">
-             <div className="text-center mb-8">
-                <span className="text-sm font-semibold text-zinc-500 uppercase tracking-wider">Certified By</span>
+             <div className="text-center mb-10">
+                <span className="text-base font-bold text-zinc-500 uppercase tracking-widest">Certified By</span>
              </div>
-             <div className="flex flex-wrap justify-center gap-8 md:gap-12 items-center opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-                <img src="https://playson.com/fmc/99-32/8ecc/b0cf/cd21/quinel_logo.png" alt="Quinel" className="h-6 md:h-8 object-contain" />
-                <img src="https://playson.com/fmc/35-32/13d3/7f7a/108c/ga_logo.png" alt="Gaming Associates" className="h-6 md:h-8 object-contain" />
-                <img src="https://playson.com/fmc/100-32/89ac/60d3/344b/bmm_logo.png" alt="BMM Testlabs" className="h-6 md:h-8 object-contain" />
-                <img src="https://playson.com/fmc/50-32/e6d9/c6c5/5e1b/gli_logo.png" alt="GLI" className="h-6 md:h-8 object-contain" />
+             <div className="flex flex-wrap justify-center gap-10 md:gap-16 items-center opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+                <img src="https://playson.com/fmc/99-32/8ecc/b0cf/cd21/quinel_logo.png" alt="Quinel" className="h-10 md:h-14 object-contain" />
+                <img src="https://playson.com/fmc/35-32/13d3/7f7a/108c/ga_logo.png" alt="Gaming Associates" className="h-10 md:h-14 object-contain" />
+                <img src="https://playson.com/fmc/100-32/89ac/60d3/344b/bmm_logo.png" alt="BMM Testlabs" className="h-10 md:h-14 object-contain" />
+                <img src="https://playson.com/fmc/50-32/e6d9/c6c5/5e1b/gli_logo.png" alt="GLI" className="h-10 md:h-14 object-contain" />
              </div>
           </div>
         </div>

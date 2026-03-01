@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-// Trigger rebuild
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import BlurText from '../components/BlurText';
 import ParticleNetwork from '../components/ParticleNetwork';
 import ScrambleText from '../components/ScrambleText';
+import GeneralInterestCTA from '../components/GeneralInterestCTA';
 import { MapPin, Clock, Building, Globe, ArrowRight, Zap, Server, Globe2, Activity, Users, Cpu, Search, Sparkles, ExternalLink, ChevronDown, ChevronUp, BarChart3, Shield, Headphones, Flame } from 'lucide-react';
 import { differenceInMonths } from 'date-fns';
 import { getTechStack, isEngineeringRole } from '../utils/jobUtils';
@@ -465,15 +465,7 @@ export default function Engineering() {
           </div>
         )}
 
-        <div className="mt-12 p-6 md:p-8 rounded-3xl bg-zinc-900/30 border border-zinc-800 flex flex-col items-center justify-between gap-6 md:gap-8 text-center">
-          <div>
-            <h3 className="text-lg md:text-xl font-bold mb-2">Don’t see your role listed?</h3>
-            <p className="text-zinc-400">Submit your information and we’ll reach out soon.</p>
-          </div>
-          <a href="https://jobs.ashbyhq.com/playson/form/general-interest" target="_blank" rel="noreferrer" className="w-full md:w-auto bg-white text-black hover:bg-zinc-200 px-8 py-3 rounded-full font-medium transition-colors inline-block">
-            Submit
-          </a>
-        </div>
+        <GeneralInterestCTA />
       </section>
     </div>
   );
