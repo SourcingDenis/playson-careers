@@ -71,7 +71,8 @@ export const isEngineeringRole = (title: string, dept: string): boolean => {
     'engineer', 'developer', 'qa', 'tech', 'data', 'platform', 'game', 
     'c++', 'c#', 'go', 'server', 'client', 'frontend', 'backend', 
     'full stack', 'devops', 'sre', 'software', 'architect', 'product', 
-    'unity', 'java', 'net', 'node', 'react', 'typescript', 'javascript'
+    'unity', 'java', 'net', 'node', 'react', 'typescript', 'javascript',
+    'security'
   ];
 
   return engineeringKeywords.some(keyword => lowerTitle.includes(keyword)) || 

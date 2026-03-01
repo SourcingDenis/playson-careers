@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
+import BlurText from '../components/BlurText';
+import LiquidEther from '../components/LiquidEther';
 import { MapPin, Clock, Building, Globe, ArrowRight, Zap, Server, Globe2, Activity, Users, Cpu, MessageCircle, Gift, GraduationCap, Heart, PartyPopper, Calendar, Search, Sparkles, ExternalLink, ShieldCheck, Handshake, ChevronDown, ChevronUp, Flame } from 'lucide-react';
 import { differenceInMonths } from 'date-fns';
 import { isEngineeringRole } from '../utils/jobUtils';
@@ -20,6 +22,7 @@ export interface Job {
 }
 
 export default function Home() {
+  const navigate = useNavigate();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -96,30 +99,46 @@ export default function Home() {
                 }}
                 className="flex flex-col items-center text-center"
             >
-                <motion.div
+                <motion.a
+                    href="#openings"
                     variants={{
                         hidden: { opacity: 0, y: 20, filter: 'blur(10px)' },
                         visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] } }
                     }}
-                    className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/50 border border-zinc-800 text-zinc-400 text-sm font-medium mb-8 backdrop-blur-sm hover:border-playson-red/50 transition-colors cursor-default"
+                    className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/50 border border-zinc-800 text-zinc-400 text-sm font-medium mb-8 backdrop-blur-sm hover:border-playson-red/50 transition-colors cursor-pointer hover:text-zinc-200"
                 >
                     <span className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-playson-red opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-playson-red"></span>
                     </span>
                     We are hiring
-                </motion.div>
+                </motion.a>
 
-                <motion.h1
-                    variants={{
-                        hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
-                        visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] } }
-                    }}
-                    className="text-4xl md:text-6xl lg:text-8xl font-bold tracking-tighter mb-8 bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-zinc-500"
-                >
-                    Shape the Future <br />
-                    of <span className="text-playson-red">iGaming</span>
-                </motion.h1>
+                <div className="text-4xl md:text-6xl lg:text-8xl font-bold tracking-tighter mb-8 flex flex-col items-center">
+                    <BlurText
+                        text="Shape the Future"
+                        delay={200}
+                        animateBy="words"
+                        direction="top"
+                        className="text-white"
+                    />
+                    <div className="flex items-center gap-4">
+                        <BlurText
+                            text="of"
+                            delay={400}
+                            animateBy="words"
+                            direction="top"
+                            className="text-white"
+                        />
+                        <BlurText
+                            text="iGaming"
+                            delay={500}
+                            animateBy="words"
+                            direction="top"
+                            className="text-playson-red"
+                        />
+                    </div>
+                </div>
 
                 <motion.p
                     variants={{
@@ -148,8 +167,20 @@ export default function Home() {
 
                     {/* Quick Filter Chips */}
                     <div className="flex flex-wrap justify-center gap-3">
+                        {/* Engineering Chip - Special */}
+                        <button
+                            onClick={() => navigate('/engineering')}
+                            className="group relative inline-flex items-center gap-2 px-6 py-3 rounded-full bg-zinc-900/80 border border-playson-red/50 text-white text-base font-medium hover:bg-zinc-800 transition-all active:scale-95 shadow-[0_0_15px_-3px_rgba(255,0,42,0.3)] hover:shadow-[0_0_25px_-5px_rgba(255,0,42,0.5)]"
+                        >
+                            <Cpu className="w-5 h-5 text-playson-red" />
+                            Engineering
+                            <span className="ml-1 flex items-center justify-center bg-playson-red text-white text-xs font-bold px-2 py-0.5 rounded-full min-w-[20px]">
+                                {engineeringJobsCount}
+                            </span>
+                            <div className="absolute inset-0 rounded-full ring-1 ring-white/10 group-hover:ring-white/20 transition-all" />
+                        </button>
+
                         {[
-                            { label: 'Engineering', icon: Cpu },
                             { label: 'Product', icon: Zap },
                             { label: 'Remote', icon: Globe },
                             { label: 'Malta', icon: MapPin },
@@ -161,9 +192,9 @@ export default function Home() {
                                     setSearchQuery(chip.label);
                                     document.getElementById('openings')?.scrollIntoView({ behavior: 'smooth' });
                                 }}
-                                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900/50 border border-zinc-800 text-zinc-400 text-sm font-medium hover:text-white hover:border-playson-red/50 hover:bg-zinc-900 transition-all active:scale-95"
+                                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-zinc-900/50 border border-zinc-800 text-zinc-400 text-base font-medium hover:text-white hover:border-zinc-600 hover:bg-zinc-900 transition-all active:scale-95"
                             >
-                                <chip.icon className="w-3.5 h-3.5" />
+                                <chip.icon className="w-4 h-4" />
                                 {chip.label}
                             </button>
                         ))}
@@ -178,7 +209,7 @@ export default function Home() {
       {/* Locations */}
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12">Choose where to work</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center">Choose where to work</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {[
               { city: 'Bratislava', country: 'Slovakia', flag: 'https://cdn.prod.website-files.com/677bda6af407d3b963833347/68f0217c26a582ed80fd66bf_Frame%2021.svg' },
@@ -211,7 +242,28 @@ export default function Home() {
 
       {/* Benefits - Bright & Animated */}
       <section className="py-16 md:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-orange-950/20 to-zinc-950 -z-10" />
+        <div className="absolute inset-0 -z-10 opacity-30">
+          <LiquidEther
+            colors={[ '#5227FF', '#FF9FFC', '#B19EEF' ]}
+            mouseForce={20}
+            cursorSize={100}
+            isViscous
+            viscous={30}
+            iterationsViscous={32}
+            iterationsPoisson={32}
+            resolution={0.5}
+            isBounce={false}
+            autoDemo
+            autoSpeed={0.5}
+            autoIntensity={2.2}
+            takeoverDuration={0.25}
+            autoResumeDelay={3000}
+            autoRampDuration={0.6}
+            color0="#5227FF"
+            color1="#FF9FFC"
+            color2="#B19EEF"
+          />
+        </div>
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <div className="text-center mb-12 md:mb-16">
             <motion.div
@@ -269,7 +321,7 @@ export default function Home() {
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-zinc-900/20 to-transparent -z-10" />
         
         <div className="mx-auto max-w-7xl px-4 md:px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6">
+          <div className="flex flex-col items-center text-center mb-12 md:mb-16 gap-6">
             <div>
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -284,7 +336,7 @@ export default function Home() {
                 Life at <span className="text-playson-red">Playson</span>
               </h2>
             </div>
-            <p className="text-zinc-400 max-w-md text-lg leading-relaxed">
+            <p className="text-zinc-400 max-w-md text-lg leading-relaxed mx-auto">
               More than just code and games. We are a community of creators, thinkers, and friends.
             </p>
           </div>
@@ -297,80 +349,108 @@ export default function Home() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-3xl bg-zinc-900 border border-zinc-800"
+              className="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-3xl bg-zinc-950 border border-zinc-800 hover:border-zinc-700 transition-colors"
             >
-              {/* Abstract Global Animation */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-30 group-hover:opacity-50 transition-opacity duration-700">
+              {/* Sharp Orbital Animation */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-40 group-hover:opacity-100 transition-opacity duration-700">
                  <div className="relative w-[600px] h-[600px]">
+                    {/* Outer Ring */}
                     <motion.div 
                         animate={{ rotate: 360 }}
-                        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-                        className="absolute inset-0 border border-zinc-700/30 rounded-full border-dashed"
-                    />
+                        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-0 border border-zinc-800 rounded-full"
+                    >
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-zinc-700 rounded-full" />
+                    </motion.div>
+                    
+                    {/* Middle Ring - Red */}
                     <motion.div 
                         animate={{ rotate: -360 }}
-                        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                        className="absolute inset-12 border border-zinc-700/30 rounded-full border-dashed"
-                    />
+                        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-24 border border-playson-red/20 rounded-full"
+                    >
+                        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-4 h-4 bg-playson-red rounded-full shadow-[0_0_15px_rgba(255,0,42,0.8)]" />
+                    </motion.div>
+
+                    {/* Inner Ring - Blue */}
                     <motion.div 
                         animate={{ rotate: 360 }}
-                        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                        className="absolute inset-24 border border-zinc-700/30 rounded-full border-dashed"
-                    />
-                    {/* Pulsing Core */}
+                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-48 border border-blue-500/20 rounded-full"
+                    >
+                        <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.8)]" />
+                    </motion.div>
+
+                    {/* Core */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-32 h-32 bg-playson-red/20 rounded-full blur-3xl animate-pulse" />
+                        <div className="w-32 h-32 bg-gradient-to-br from-playson-red/20 to-blue-600/20 rounded-full backdrop-blur-sm border border-white/10" />
                     </div>
                  </div>
               </div>
               
-              <div className="absolute bottom-0 left-0 p-8 z-10">
-                <span className="inline-block px-3 py-1 bg-playson-red text-white text-xs font-bold rounded-full mb-3">INNOVATION</span>
+              <div className="absolute bottom-0 left-0 p-8 z-10 bg-gradient-to-t from-zinc-950 via-zinc-950/80 to-transparent w-full">
+                <span className="inline-block px-3 py-1 bg-white text-black text-xs font-bold rounded-full mb-3 tracking-wider">GLOBAL HUBS</span>
                 <h3 className="text-3xl font-bold text-white mb-2">Global Impact</h3>
                 <p className="text-zinc-300 text-base max-w-md">
-                  From our hubs in Malta, Ukraine, Slovakia, and the UK, we're building technology that powers entertainment worldwide.
+                  From our hubs in <span className="text-white font-medium">Malta, Ukraine, Slovakia, and the UK</span>, we're building technology that powers entertainment worldwide.
                 </p>
               </div>
             </motion.div>
 
-            {/* 2. Work: Code Synergy (1 col, 1 row) */}
+            {/* 2. Work: Engineering First (1 col, 1 row) */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="relative group overflow-hidden rounded-3xl bg-zinc-900 border border-zinc-800"
+              className="relative group overflow-hidden rounded-3xl bg-[#0D1117] border border-zinc-800 hover:border-zinc-700 transition-colors"
             >
-              <div className="absolute inset-0 p-6 font-mono text-xs text-zinc-600 opacity-50 overflow-hidden">
-                <motion.div
-                    animate={{ y: [0, -100] }}
-                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                >
-                    {`import { Future } from '@playson/core';\n\nconst innovation = new Future({\n  mode: 'disruptive',\n  speed: 'max',\n  tech: ['React', 'Go', 'K8s']\n});\n\nfunction buildNextGen() {\n  return innovation.deploy();\n}\n\n// Optimization in progress...`}
-                </motion.div>
+              <div className="absolute top-0 left-0 right-0 h-8 bg-zinc-800/50 flex items-center px-4 gap-1.5 border-b border-zinc-800">
+                <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+                <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent" />
+              <div className="absolute inset-0 pt-12 px-6 font-mono text-xs leading-relaxed">
+                <div className="text-zinc-500 mb-2">// core_engine.ts</div>
+                <div className="text-purple-400">class <span className="text-yellow-300">Innovation</span> <span className="text-white">{`{`}</span></div>
+                <div className="pl-4 text-blue-400">async <span className="text-yellow-300">deploy</span><span className="text-white">() {`{`}</span></div>
+                <div className="pl-8 text-white">
+                    <span className="text-red-400">await</span> this.<span className="text-green-400">scale</span>(<span className="text-orange-400">'∞'</span>);
+                </div>
+                <div className="pl-8 text-white">
+                    <span className="text-zinc-500">/* Optimization complete */</span>
+                </div>
+                <div className="pl-4 text-white">{`}`}</div>
+                <div className="text-white">{`}`}</div>
+                <motion.div 
+                    animate={{ opacity: [1, 0] }}
+                    transition={{ duration: 0.8, repeat: Infinity }}
+                    className="inline-block w-2 h-4 bg-playson-red ml-1 align-middle"
+                />
+              </div>
               <div className="absolute bottom-6 left-6">
                  <h3 className="text-lg font-bold text-white group-hover:text-playson-red transition-colors">Engineering First</h3>
               </div>
             </motion.div>
 
-            {/* 3. Stat Card (1 col, 1 row) - KEEPING THIS ONE BUT REFRESHING */}
+            {/* 3. Stat Card (1 col, 1 row) */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-playson-red to-red-700 p-8 flex flex-col justify-between group"
+              className="relative overflow-hidden rounded-3xl bg-playson-red p-8 flex flex-col justify-between group shadow-lg shadow-playson-red/20"
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10 transition-transform duration-500 group-hover:scale-150" />
+              <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
+              <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-white/20 to-transparent rounded-full blur-2xl -mr-10 -mt-10 transition-transform duration-500 group-hover:scale-125" />
+              
               <div className="relative z-10">
                 <Users className="w-8 h-8 text-white mb-4" />
-                <div className="text-5xl font-bold text-white mb-2">350+</div>
-                <div className="text-white/80 font-medium">Playsoners Worldwide</div>
+                <div className="text-6xl font-bold text-white mb-1 tracking-tighter">350+</div>
+                <div className="text-white/90 font-medium text-lg">Playsoners Worldwide</div>
               </div>
               <div className="relative z-10 mt-4 pt-4 border-t border-white/20">
-                <div className="flex items-center gap-2 text-white text-sm font-bold">
+                <div className="flex items-center gap-2 text-white font-bold group-hover:translate-x-1 transition-transform">
                   Join the family <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -382,23 +462,22 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="relative group overflow-hidden rounded-3xl bg-zinc-900 border border-zinc-800"
+              className="relative group overflow-hidden rounded-3xl bg-zinc-950 border border-zinc-800 hover:border-zinc-700 transition-colors"
             >
                {/* Equalizer Animation */}
-               <div className="absolute inset-0 flex items-center justify-center gap-2 opacity-40 group-hover:opacity-60 transition-opacity">
+               <div className="absolute inset-0 flex items-center justify-center gap-3">
                   {[...Array(5)].map((_, i) => (
                       <motion.div 
                         key={i}
-                        animate={{ height: ['20%', '80%', '40%', '90%', '30%'] }}
-                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.1 }}
-                        className="w-4 bg-playson-red rounded-full"
+                        animate={{ height: ['20%', '80%', '40%', '100%', '30%'] }}
+                        transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut", delay: i * 0.1 }}
+                        className="w-3 rounded-full bg-gradient-to-t from-playson-red to-orange-500 shadow-[0_0_10px_rgba(255,0,42,0.5)]"
                       />
                   ))}
                </div>
-               <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent" />
-               <div className="absolute bottom-6 left-6 right-6">
-                  <h3 className="text-xl font-bold text-white mb-2">High Energy</h3>
-                  <p className="text-zinc-400 text-sm">We work hard and celebrate harder.</p>
+               <div className="absolute bottom-6 left-6 right-6 bg-zinc-950/80 backdrop-blur-sm p-3 rounded-xl border border-zinc-800/50">
+                  <h3 className="text-lg font-bold text-white mb-1">High Energy</h3>
+                  <p className="text-zinc-400 text-xs">We work hard and celebrate harder.</p>
                </div>
             </motion.div>
 
@@ -408,33 +487,48 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
-              className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-zinc-900 border border-zinc-800"
+              className="md:col-span-2 relative group overflow-hidden rounded-3xl bg-zinc-950 border border-zinc-800 hover:border-zinc-700 transition-colors"
             >
               {/* Network Animation */}
-              <div className="absolute inset-0 opacity-30">
-                 <svg className="w-full h-full">
-                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                        <circle cx="2" cy="2" r="1" className="fill-zinc-600" />
+              <div className="absolute inset-0">
+                 <svg className="w-full h-full opacity-50 group-hover:opacity-80 transition-opacity duration-500">
+                    <pattern id="grid-sharp" width="50" height="50" patternUnits="userSpaceOnUse">
+                        <circle cx="1" cy="1" r="1" className="fill-zinc-700" />
                     </pattern>
-                    <rect width="100%" height="100%" fill="url(#grid)" />
+                    <rect width="100%" height="100%" fill="url(#grid-sharp)" />
                  </svg>
-                 {/* Moving Nodes */}
-                 {[...Array(3)].map((_, i) => (
+                 
+                 {/* Connecting Lines */}
+                 <div className="absolute inset-0">
+                    <motion.div 
+                        className="absolute top-1/4 left-1/4 w-32 h-[1px] bg-gradient-to-r from-transparent via-playson-red to-transparent"
+                        animate={{ opacity: [0, 1, 0], width: ['0%', '40%'], left: ['20%', '30%'] }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                    <motion.div 
+                        className="absolute top-2/3 right-1/3 w-48 h-[1px] bg-gradient-to-r from-transparent via-blue-500 to-transparent"
+                        animate={{ opacity: [0, 1, 0], width: ['0%', '30%'], right: ['20%', '40%'] }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                    />
+                 </div>
+
+                 {/* Bright Nodes */}
+                 {[...Array(4)].map((_, i) => (
                     <motion.div 
                         key={i}
-                        className="absolute w-2 h-2 bg-playson-red rounded-full shadow-[0_0_10px_rgba(255,0,42,0.8)]"
+                        className="absolute w-2 h-2 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)]"
                         animate={{ 
-                            x: [Math.random() * 400, Math.random() * 400], 
-                            y: [Math.random() * 200, Math.random() * 200] 
+                            y: [0, -20, 0],
+                            opacity: [0.5, 1, 0.5]
                         }}
-                        transition={{ duration: 10 + i * 2, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
-                        style={{ top: `${20 + i * 30}%`, left: `${10 + i * 20}%` }}
+                        transition={{ duration: 3 + i, repeat: Infinity, ease: "easeInOut" }}
+                        style={{ top: `${30 + i * 15}%`, left: `${20 + i * 20}%` }}
                     />
                  ))}
               </div>
               
-              <div className="absolute bottom-6 left-6">
-                 <h3 className="text-xl font-bold text-white">Connected Culture</h3>
+              <div className="absolute bottom-6 left-6 bg-zinc-950/80 backdrop-blur-sm px-6 py-4 rounded-2xl border border-zinc-800/50">
+                 <h3 className="text-xl font-bold text-white mb-1">Connected Culture</h3>
                  <p className="text-zinc-300 text-sm">A flat structure where every voice matters and ideas flow freely.</p>
               </div>
             </motion.div>
@@ -443,9 +537,9 @@ export default function Home() {
         </div>
       </section>
       <section id="openings" className="mx-auto max-w-7xl px-4 md:px-6 py-16 md:py-24 border-t border-zinc-800/50">
-        <div className="mb-8 md:mb-12 text-center md:text-left">
+        <div className="mb-8 md:mb-12 text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6">Join Playson</h2>
-          <p className="text-lg md:text-xl text-zinc-400 max-w-2xl">
+          <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto">
             We combine agility, ownership, and deep technical expertise to deliver products that millions of people enjoy daily.
           </p>
         </div>
@@ -640,7 +734,7 @@ export default function Home() {
           </div>
         )}
 
-        <div className="mt-12 p-6 md:p-8 rounded-3xl bg-zinc-900/30 border border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 text-center md:text-left">
+        <div className="mt-12 p-6 md:p-8 rounded-3xl bg-zinc-900/30 border border-zinc-800 flex flex-col items-center justify-between gap-6 md:gap-8 text-center">
           <div>
             <h3 className="text-lg md:text-xl font-bold mb-2">Don’t see your role listed?</h3>
             <p className="text-zinc-400">Submit your information and we’ll reach out soon.</p>

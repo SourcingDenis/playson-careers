@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import BlurText from '../components/BlurText';
 import { MapPin, Clock, Building, Globe, ArrowRight, Zap, Server, Globe2, Activity, Users, Cpu, Search, Sparkles, ExternalLink, ChevronDown, ChevronUp, BarChart3, Shield, Headphones, Flame } from 'lucide-react';
 import { differenceInMonths } from 'date-fns';
 import { getTechStack, isEngineeringRole } from '../utils/jobUtils';
@@ -74,7 +75,7 @@ export default function Engineering() {
   return (
     <div className="pb-0 bg-zinc-950 text-zinc-50">
       {/* Hero */}
-      <section className="relative pt-24 pb-16 md:pt-32 md:pb-20 overflow-hidden min-h-[90vh] flex items-center">
+      <section className="relative pt-32 pb-32 md:pt-64 md:pb-64 overflow-hidden min-h-screen flex items-center">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-playson-red/10 via-zinc-950 to-zinc-950 -z-10" />
         
         {/* Animated Grid Background */}
@@ -96,10 +97,22 @@ export default function Engineering() {
                 Hiring Engineers & Product Leaders
               </div>
               
-              <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tighter mb-6 leading-[1.1]">
-                xPlatform. <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-playson-red to-red-600 inline-block pb-2">Built for Scale.</span>
-              </h1>
+              <div className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tighter mb-6 leading-[1.1]">
+                <BlurText
+                  text="xPlatform."
+                  delay={200}
+                  animateBy="words"
+                  direction="top"
+                  className="block mb-2"
+                />
+                <BlurText
+                  text="Built for Scale."
+                  delay={400}
+                  animateBy="words"
+                  direction="top"
+                  className="text-playson-red inline-block pb-2"
+                />
+              </div>
               
               <p className="text-lg md:text-xl text-zinc-400 mb-10 leading-relaxed max-w-lg">
                 Join the team building a highly adaptable solution that provides superior gaming and business experience through flexible API, powerful BI tools, and streamlined integration.
@@ -235,25 +248,69 @@ export default function Engineering() {
       </section>
 
       {/* Tech Stack */}
-      <section className="py-16 md:py-20">
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Our tech stack:</h2>
-          <p className="text-zinc-400 mb-8 md:mb-12 max-w-2xl">Built with modern technologies for performance and scale.</p>
-          <div className="bg-white/5 rounded-3xl p-6 md:p-12 flex items-center justify-center">
-            <img 
-              src="https://cdn.prod.website-files.com/69038a3e1adee10d6f7b7485/698b141f97b50900460d42af_Group%2022.svg" 
-              alt="Tech Stack" 
-              className="w-full max-w-4xl opacity-90"
-            />
-          </div>
+      <section className="py-20 md:py-32 overflow-hidden">
+        <div className="mx-auto max-w-7xl px-4 md:px-6 mb-16 md:mb-24 text-center">
+          <h2 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">Our tech stack:</h2>
+          <p className="text-zinc-400 max-w-3xl mx-auto text-xl md:text-2xl leading-relaxed">Built with modern technologies for performance and scale.</p>
+        </div>
+        
+        <div className="relative w-full overflow-visible">
+            <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-transparent to-zinc-950 z-10 pointer-events-none" />
+            
+            <div className="flex py-32 overflow-x-hidden">
+                <motion.div 
+                    className="flex gap-16 md:gap-32 items-center px-6 md:px-10"
+                    animate={{ x: "-50%" }}
+                    transition={{ 
+                        duration: 30, 
+                        ease: "linear", 
+                        repeat: Infinity 
+                    }}
+                    style={{ width: "fit-content" }}
+                >
+                    {[...Array(2)].map((_, setIndex) => (
+                        <div key={setIndex} className="flex gap-16 md:gap-32 items-center shrink-0">
+                            {[
+                                { name: 'React', url: 'https://cdn.simpleicons.org/react/61DAFB' },
+                                { name: 'TypeScript', url: 'https://cdn.simpleicons.org/typescript/3178C6' },
+                                { name: 'Node.js', url: 'https://cdn.simpleicons.org/nodedotjs/339933' },
+                                { name: 'Go', url: 'https://cdn.simpleicons.org/go/00ADD8' },
+                                { name: 'C#', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg' },
+                                { name: 'C++', url: 'https://cdn.simpleicons.org/cplusplus/00599C' },
+                                { name: 'AWS', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg' },
+                                { name: 'Kubernetes', url: 'https://cdn.simpleicons.org/kubernetes/326CE5' },
+                                { name: 'Docker', url: 'https://cdn.simpleicons.org/docker/2496ED' },
+                                { name: 'Unity', url: 'https://cdn.simpleicons.org/unity/white' },
+                                { name: 'PostgreSQL', url: 'https://cdn.simpleicons.org/postgresql/4169E1' },
+                                { name: 'Redis', url: 'https://cdn.simpleicons.org/redis/FF4438' },
+                                { name: 'Grafana', url: 'https://cdn.simpleicons.org/grafana/F46800' },
+                                { name: 'Terraform', url: 'https://cdn.simpleicons.org/terraform/7B42BC' },
+                            ].map((tech, i) => (
+                                <div key={`${setIndex}-${i}`} className="group relative flex flex-col items-center justify-center gap-4 hover:z-50">
+                                    <div className="relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center transition-all duration-300 group-hover:scale-150 cursor-pointer">
+                                        <img 
+                                            src={tech.url} 
+                                            alt={tech.name} 
+                                            className="w-full h-full object-contain filter grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 group-hover:brightness-110 group-hover:drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] transition-all duration-300"
+                                        />
+                                    </div>
+                                    <span className="absolute -bottom-16 opacity-0 group-hover:opacity-100 transition-all duration-300 text-lg font-bold text-white whitespace-nowrap bg-zinc-900/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-zinc-700 shadow-xl translate-y-2 group-hover:translate-y-0 z-50 pointer-events-none">
+                                        {tech.name}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    ))}
+                </motion.div>
+            </div>
         </div>
       </section>
 
       {/* Job List */}
       <section id="openings" className="mx-auto max-w-7xl px-4 md:px-6 py-16 md:py-24 border-t border-zinc-800/50">
-        <div className="mb-8 md:mb-12 text-center md:text-left">
+        <div className="mb-8 md:mb-12 text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6">Join Playson Engineering</h2>
-          <p className="text-lg md:text-xl text-zinc-400 max-w-2xl">
+          <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto">
             We combine agility, ownership, and deep technical expertise to deliver products that millions of people enjoy daily.
           </p>
         </div>
@@ -399,7 +456,7 @@ export default function Engineering() {
           </div>
         )}
 
-        <div className="mt-12 p-6 md:p-8 rounded-3xl bg-zinc-900/30 border border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 text-center md:text-left">
+        <div className="mt-12 p-6 md:p-8 rounded-3xl bg-zinc-900/30 border border-zinc-800 flex flex-col items-center justify-between gap-6 md:gap-8 text-center">
           <div>
             <h3 className="text-lg md:text-xl font-bold mb-2">Don’t see your role listed?</h3>
             <p className="text-zinc-400">Submit your information and we’ll reach out soon.</p>
