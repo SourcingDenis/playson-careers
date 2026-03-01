@@ -604,7 +604,9 @@ export default function Home() {
               className="relative overflow-hidden rounded-3xl bg-zinc-900/50 p-[1px] group"
             >
                 {/* Lighting Border Animation */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-square w-[200%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_340deg,#ff002a_360deg)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                <div className="absolute inset-0 overflow-hidden rounded-3xl">
+                    <div className="absolute inset-0 h-full w-full animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_340deg,#ff002a_360deg)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </div>
 
                 <div className="absolute inset-0 bg-gradient-to-r from-playson-red/10 via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-500 rounded-3xl" />
                 
