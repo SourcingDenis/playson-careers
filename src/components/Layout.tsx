@@ -45,10 +45,10 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   const scrollToOpportunities = () => {
     if (pathname !== '/') {
-      navigate('/#openings');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    
+
     const element = document.getElementById('openings');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
