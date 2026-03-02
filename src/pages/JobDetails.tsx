@@ -157,9 +157,9 @@ export default function JobDetails() {
       )}
 
       {/* Header */}
-      <div className={`bg-zinc-900/50 border-b pt-12 pb-16 transition-colors duration-500 ${isHot ? 'border-playson-red/30' : 'border-zinc-800'}`}>
+      <div className={`bg-zinc-900/50 border-b pt-8 md:pt-12 pb-12 md:pb-16 transition-colors duration-500 ${isHot ? 'border-playson-red/30' : 'border-zinc-800'}`}>
         <div className="mx-auto max-w-4xl px-4 md:px-6">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-200 transition-colors mb-8">
+          <Link to="/" className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-200 transition-colors mb-6 md:mb-8">
             <ArrowLeft className="w-4 h-4" /> Back to careers
           </Link>
           
@@ -262,7 +262,7 @@ export default function JobDetails() {
           </div>
           
           <div className="lg:col-span-1 space-y-8">
-            <div className={`sticky top-24 bg-zinc-900/50 border rounded-2xl p-6 transition-colors duration-500 ${isHot ? 'border-playson-red/30 shadow-lg shadow-playson-red/5' : 'border-zinc-800'}`}>
+            <div className={`lg:sticky lg:top-24 bg-zinc-900/50 border rounded-2xl p-6 transition-colors duration-500 ${isHot ? 'border-playson-red/30 shadow-lg shadow-playson-red/5' : 'border-zinc-800'}`}>
               <h3 className="text-lg font-semibold mb-4">Job Overview</h3>
               
               <div className="space-y-4">

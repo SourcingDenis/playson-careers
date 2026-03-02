@@ -58,7 +58,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-50 font-sans selection:bg-playson-red/30">
       <header className="sticky top-0 z-50 bg-zinc-950/60 backdrop-blur-2xl transition-all duration-300">
-        <div className="mx-auto max-w-7xl px-6 h-20 flex items-center justify-between">
+        <div className="mx-auto max-w-7xl px-4 md:px-6 h-20 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">
             <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700/50 group-hover:border-playson-red/50 transition-colors shadow-lg shadow-black/20">
                 <Gamepad2 className="w-6 h-6 text-playson-red group-hover:scale-110 transition-transform duration-300" />
@@ -115,7 +115,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={scrollToOpportunities}
-            className="fixed bottom-8 right-8 z-40 flex items-center justify-center w-14 h-14 bg-playson-red text-white rounded-full shadow-[0_10px_40px_-10px_rgba(255,0,42,0.5)] border border-white/10 backdrop-blur-md group"
+            className="fixed bottom-6 right-4 md:bottom-8 md:right-8 z-40 flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-playson-red text-white rounded-full shadow-[0_10px_40px_-10px_rgba(255,0,42,0.5)] border border-white/10 backdrop-blur-md group"
           >
             <motion.div
               animate={{ y: [0, -4, 0] }}
