@@ -163,7 +163,7 @@ export default function Home() {
                             delay={500}
                             animateBy="words"
                             direction="top"
-                            className="text-white"
+                            className="text-playson-red"
                         />
                     </div>
                     <div className="flex items-center gap-4">
