@@ -483,20 +483,58 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="relative overflow-hidden rounded-3xl bg-playson-red p-8 flex flex-col justify-between group shadow-lg shadow-playson-red/20"
+              className="relative overflow-hidden rounded-3xl bg-playson-red p-8 flex flex-col justify-between group shadow-lg shadow-playson-red/20 cursor-default"
             >
               <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
-              <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-white/20 to-transparent rounded-full blur-2xl -mr-10 -mt-10 transition-transform duration-500 group-hover:scale-125" />
               
+              {/* Animated Background Blob */}
+              <motion.div 
+                className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-white/30 to-transparent rounded-full blur-2xl -mr-10 -mt-10"
+                animate={{ 
+                    scale: [1, 1.2, 1],
+                    rotate: [0, 10, 0],
+                }}
+                transition={{ 
+                    duration: 4, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                }}
+              />
+              
+              {/* Interactive Particles on Hover */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                  {[...Array(6)].map((_, i) => (
+                      <motion.div
+                          key={i}
+                          className="absolute w-2 h-2 bg-white rounded-full"
+                          initial={{ y: 0, opacity: 0 }}
+                          whileHover={{ 
+                              y: -100, 
+                              x: (Math.random() - 0.5) * 100,
+                              opacity: [0, 1, 0] 
+                          }}
+                          transition={{ 
+                              duration: 1 + Math.random(), 
+                              repeat: Infinity,
+                              delay: Math.random() * 0.5
+                          }}
+                          style={{ 
+                              bottom: '20%', 
+                              left: `${20 + Math.random() * 60}%` 
+                          }}
+                      />
+                  ))}
+              </div>
+
               <div className="relative z-10">
-                <Users className="w-8 h-8 text-white mb-4" />
+                <motion.div
+                    whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <Users className="w-8 h-8 text-white mb-4" />
+                </motion.div>
                 <div className="text-6xl font-bold text-white mb-1 tracking-tighter">350+</div>
                 <div className="text-white/90 font-medium text-lg">Playsoners Worldwide</div>
-              </div>
-              <div className="relative z-10 mt-4 pt-4 border-t border-white/20">
-                <div className="flex items-center gap-2 text-white font-bold group-hover:translate-x-1 transition-transform">
-                  Join the family <ArrowRight className="w-4 h-4" />
-                </div>
               </div>
             </motion.div>
 
@@ -604,7 +642,9 @@ export default function Home() {
               className="relative overflow-hidden rounded-3xl bg-zinc-900/50 p-[1px] group"
             >
                 {/* Lighting Border Animation */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-square w-[200%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_340deg,#ff002a_360deg)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                <div className="absolute inset-0 overflow-hidden rounded-3xl">
+                    <div className="absolute inset-0 h-full w-full animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_340deg,#ff002a_360deg)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </div>
 
                 <div className="absolute inset-0 bg-gradient-to-r from-playson-red/10 via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-500 rounded-3xl" />
                 

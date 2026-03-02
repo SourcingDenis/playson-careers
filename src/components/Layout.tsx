@@ -28,17 +28,20 @@ export default function Layout({ children }: { children: ReactNode }) {
         setShowFloatingButton(false);
       }
 
-      // Show Engineering Link if scrolled past Hero (approx 80vh)
-      if (scrollY > winHeight * 0.8) {
+      // Show Engineering Link if scrolled past Hero (approx 80vh) AND on homepage
+      if (pathname === '/' && scrollY > winHeight * 0.8) {
         setShowEngineeringLink(true);
       } else {
         setShowEngineeringLink(false);
       }
     };
 
+    // Initial check
+    handleScroll();
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [pathname]);
 
   const scrollToOpportunities = () => {
     if (pathname !== '/') {

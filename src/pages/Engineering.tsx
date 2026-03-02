@@ -294,7 +294,7 @@ export default function Engineering() {
                                 { name: 'Terraform', url: 'https://cdn.simpleicons.org/terraform/7B42BC' },
                             ].map((tech, i) => (
                                 <div key={`${setIndex}-${i}`} className="group relative flex flex-col items-center justify-center gap-4 hover:z-50">
-                                    <div className="relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center transition-all duration-300 group-hover:scale-150 cursor-pointer">
+                                    <div className="relative w-32 h-32 md:w-48 md:h-48 flex items-center justify-center transition-all duration-300 group-hover:scale-125 cursor-pointer">
                                         <img 
                                             src={tech.url} 
                                             alt={tech.name} 
