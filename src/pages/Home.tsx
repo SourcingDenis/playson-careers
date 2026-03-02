@@ -385,7 +385,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[240px]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[200px] md:auto-rows-[240px]">
             
             {/* 1. Hero: Global Innovation (Spans 2 cols, 2 rows) */}
             <motion.div 
@@ -393,7 +393,7 @@ export default function Home() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-3xl bg-zinc-950 border border-zinc-800 hover:border-zinc-700 transition-colors"
+              className="row-span-2 md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-3xl bg-zinc-950 border border-zinc-800 hover:border-zinc-700 transition-colors"
             >
               {/* Sharp Orbital Animation */}
               <div className="absolute inset-0 flex items-center justify-center opacity-40 group-hover:opacity-100 transition-opacity duration-700">
@@ -746,7 +746,7 @@ export default function Home() {
                                     >
                                         <Link 
                                         to={`/job/${job.id}`}
-                                        className={`group block bg-zinc-900/50 border rounded-2xl p-4 md:p-6 transition-all duration-300 hover:bg-zinc-900 hover:shadow-xl hover:scale-[1.02] ${
+                                        className={`group block bg-zinc-900/50 border rounded-2xl p-4 md:p-6 transition-all duration-300 hover:bg-zinc-900 hover:shadow-xl md:hover:scale-[1.02] ${
                                           differenceInMonths(new Date(), new Date(job.publishedAt)) > 6 
                                             ? 'border-playson-red/50 animate-pulse hover:animate-none hover:border-playson-red hover:shadow-playson-red/20' 
                                             : 'border-zinc-800 hover:border-playson-red/50 hover:shadow-playson-red/5'
@@ -859,7 +859,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 items-center justify-items-center opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-12 items-center justify-items-center opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
              {/* Licenses */}
              <img src="https://playson.com/fmc/120-68/af9e/232c/8212/l-logo-1.png" alt="UKGC" className="h-16 md:h-20 object-contain" />
              <img src="https://playson.com/fmc/64-68/f099/cd97/cc48/l-logo-2.png" alt="ONJN" className="h-16 md:h-20 object-contain" />
@@ -875,7 +875,7 @@ export default function Home() {
              <div className="text-center mb-10">
                 <span className="text-base font-bold text-zinc-500 uppercase tracking-widest">Certified By</span>
              </div>
-             <div className="flex flex-wrap justify-center gap-10 md:gap-16 items-center opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+             <div className="flex flex-wrap justify-center gap-6 md:gap-16 items-center opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
                 <img src="https://playson.com/fmc/99-32/8ecc/b0cf/cd21/quinel_logo.png" alt="Quinel" className="h-10 md:h-14 object-contain" />
                 <img src="https://playson.com/fmc/35-32/13d3/7f7a/108c/ga_logo.png" alt="Gaming Associates" className="h-10 md:h-14 object-contain" />
                 <img src="https://playson.com/fmc/100-32/89ac/60d3/344b/bmm_logo.png" alt="BMM Testlabs" className="h-10 md:h-14 object-contain" />
@@ -892,7 +892,7 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-zinc-900 to-black border border-zinc-800 p-8 md:p-20 text-center"
+            className="relative overflow-hidden rounded-3xl md:rounded-[2.5rem] bg-gradient-to-br from-zinc-900 to-black border border-zinc-800 p-8 md:p-20 text-center"
           >
             {/* Decorative background elements */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
@@ -911,7 +911,7 @@ export default function Home() {
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">perfect for Playson?</span>
               </h2>
               
-              <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-12 leading-relaxed">
+              <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-8 md:mb-12 leading-relaxed">
                 Major rewards are in store for all network members. Join our referral program and help us build the future of iGaming.
               </p>
               

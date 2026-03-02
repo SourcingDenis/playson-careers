@@ -253,20 +253,20 @@ export default function Engineering() {
       </section>
 
       {/* Tech Stack */}
-      <section className="py-20 md:py-32 overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 md:px-6 mb-16 md:mb-24 text-center">
-          <h2 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+      <section className="py-16 md:py-20 lg:py-32 overflow-hidden">
+        <div className="mx-auto max-w-7xl px-4 md:px-6 mb-8 md:mb-16 lg:mb-24 text-center">
+          <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-6 tracking-tight">
             <ScrambleText text="Our tech stack:" />
           </h2>
-          <p className="text-zinc-400 max-w-3xl mx-auto text-xl md:text-2xl leading-relaxed">Built with modern technologies for performance and scale.</p>
+          <p className="text-zinc-400 max-w-3xl mx-auto text-lg md:text-xl lg:text-2xl leading-relaxed">Built with modern technologies for performance and scale.</p>
         </div>
         
         <div className="relative w-full overflow-visible">
             <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-transparent to-zinc-950 z-10 pointer-events-none" />
             
-            <div className="flex py-32 overflow-x-hidden">
+            <div className="flex py-16 md:py-32 overflow-x-hidden">
                 <motion.div 
-                    className="flex gap-16 md:gap-32 items-center px-6 md:px-10"
+                    className="flex gap-8 md:gap-16 lg:gap-32 items-center px-6 md:px-10"
                     animate={{ x: "-50%" }}
                     transition={{ 
                         duration: 30, 
@@ -276,7 +276,7 @@ export default function Engineering() {
                     style={{ width: "fit-content" }}
                 >
                     {[...Array(2)].map((_, setIndex) => (
-                        <div key={setIndex} className="flex gap-16 md:gap-32 items-center shrink-0">
+                        <div key={setIndex} className="flex gap-8 md:gap-16 lg:gap-32 items-center shrink-0">
                             {[
                                 { name: 'React', url: 'https://cdn.simpleicons.org/react/61DAFB' },
                                 { name: 'TypeScript', url: 'https://cdn.simpleicons.org/typescript/3178C6' },
@@ -294,7 +294,7 @@ export default function Engineering() {
                                 { name: 'Terraform', url: 'https://cdn.simpleicons.org/terraform/7B42BC' },
                             ].map((tech, i) => (
                                 <div key={`${setIndex}-${i}`} className="group relative flex flex-col items-center justify-center gap-4 hover:z-50">
-                                    <div className="relative w-32 h-32 md:w-48 md:h-48 flex items-center justify-center transition-all duration-300 group-hover:scale-125 cursor-pointer">
+                                    <div className="relative w-20 h-20 md:w-32 md:h-32 lg:w-48 lg:h-48 flex items-center justify-center transition-all duration-300 group-hover:scale-125 cursor-pointer">
                                         <img 
                                             src={tech.url} 
                                             alt={tech.name} 

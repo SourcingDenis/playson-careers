@@ -6,26 +6,26 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-zinc-950 pt-24 pb-12 overflow-hidden border-t border-zinc-900">
+    <footer className="relative bg-zinc-950 pt-16 md:pt-24 pb-12 overflow-hidden border-t border-zinc-900">
       {/* Animated Background Gradient */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-playson-red/5 rounded-full blur-[120px]" />
         <div className="absolute bottom-0 right-0 w-[800px] h-[600px] bg-blue-900/5 rounded-full blur-[100px]" />
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 relative z-10">
+      <div className="mx-auto max-w-7xl px-4 md:px-6 relative z-10">
         {/* CTA Section */}
-        <div className="mb-24 text-center">
+        <div className="mb-16 md:mb-24 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-zinc-500">
+            <h2 className="text-3xl md:text-4xl lg:text-6xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-zinc-500">
               Ready to shape the future?
             </h2>
-            <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-10">
+            <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-8 md:mb-10">
               Join our team of creators, engineers, and innovators building the next generation of iGaming entertainment.
             </p>
             
@@ -49,10 +49,10 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-zinc-800 to-transparent mb-16" />
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-zinc-800 to-transparent mb-10 md:mb-16" />
 
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-10 md:mb-16">
           {/* Brand Column */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center gap-2 text-playson-red hover:text-red-500 transition-colors">
